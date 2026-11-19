@@ -1,0 +1,125 @@
+=====================================================================
+ GUÍA DE TU PARTE: EL CÓDIGO Y LA DEMO EN VIVO   (~6 minutos)
+ Va DESPUÉS de que el equipo exponga las láminas.
+=====================================================================
+
+IDEA CENTRAL (dila al empezar):
+  "Ya vieron la teoría. Ahora les muestro que funciona: primero que da
+   el resultado CORRECTO, y después que es MÁS RÁPIDO en paralelo."
+
+Lo que pide el cronograma para esta etapa (S7 y hito H2 de S8):
+  - S7: speedup S(p) y eficiencia E(p) con 1, 2, 4 y 8 hilos.
+  - H2: OpenMP y Go dan LO MISMO que el secuencial con 1 a 8 hilos,
+        y se muestra la respuesta de un edificio pequeño ante un sismo.
+  -> La demo de abajo muestra exactamente esas tres cosas.
+  -> NO muestres MPI ni CUDA: tocan en S9-S13 y aún no existen.
+
+---------------------------------------------------------------------
+ ANTES DE LA EXPOSICIÓN (una sola vez, en la laptop que llevarás)
+---------------------------------------------------------------------
+ 1. Tener instalados (en esta PC ya están):
+      winget install -e --id BrechtSanders.WinLibs.POSIX.UCRT   (gcc + OpenMP)
+      winget install -e --id GoLang.Go                          (Go)
+ 2. Doble clic en  DEMO_EN_VIVO.bat  y recórrelo completo una vez
+    (la primera vez compila solo, unos segundos).
+ 3. Abre en VS Code (o el Bloc de notas) estos 3 archivos y déjalos
+    abiertos en pestañas:
+      src\seq.c               (línea 58: spmm_csr, el producto K·U)
+      src\omp\matmul_omp.c    (línea 80: #pragma omp parallel for)
+      go\paralelo.go          (líneas 27-49: el worker pool)
+ 4. Conecta el cargador (sin cargador la laptop va más lenta y el
+    speedup sale peor).
+
+---------------------------------------------------------------------
+ EN LA EXPOSICIÓN: 2 PARTES
+---------------------------------------------------------------------
+
+ PARTE A - EL CÓDIGO (2 min). Solo 3 pedazos, no todo.
+
+   A1) src\seq.c, función spmm_csr (línea 58)  = el producto K·U
+       Di: "Esto es K por U. Por cada nodo (fila) recorro solo sus
+       vecinos, no toda la matriz, y lo hago para todos los sismos
+       a la vez."
+
+   A2) src\omp\matmul_omp.c, línea 80: #pragma omp parallel for
+       Di: "Para paralelizarlo en C con OpenMP basta esta línea: reparte
+       las filas entre los hilos. Cada hilo escribe solo sus filas, por
+       eso no hay condiciones de carrera ni hacen falta candados."
+
+   A3) go\paralelo.go, función pool (líneas 27-49)
+       Di: "En Go lo hacemos nosotros: un canal con tareas, varias
+       goroutines que las toman (go func) y un WaitGroup que espera a
+       que todas terminen. Es un worker pool."
+
+ PARTE B - LA DEMO (4 min). Informe con capturas: Exposicion\Mi_parte_codigo_y_demo.pdf
+ Doble clic en DEMO_EN_VIVO.bat
+ Cada paso se detiene: presionas una tecla para pasar al siguiente.
+
+   PASO 1 - Pruebas del secuencial
+     Sale: 47 pruebas OK y 23 pruebas OK, y el periodo medido con
+           error 1e-05.
+     Di: "Primero correcto: 70 pruebas automáticas. El simulador
+          reproduce la fórmula exacta del oscilador. Ese es el hito H1."
+
+   PASO 2 - OpenMP igual al secuencial
+     Sale: 51 pruebas OK.
+     Di: "Con 1, 2, 3, 4 y 8 hilos el resultado es idéntico bit a bit
+          al secuencial. Paralelo pero igual de correcto."
+
+   PASO 3 - Go igual al secuencial
+     Sale: 5 líneas PASS y ok.
+     Di: "La versión en Go también coincide, incluso con los mismos
+          números que genera C."
+
+   PASO 4 - Demo del edificio (lo más vistoso, tómate tu tiempo)
+     Sale: el dibujo del edificio de 10 pisos, la tabla por piso, las
+           barras de deriva y el mensaje de RESONANCIA.
+     Señala:
+       - "50 nodos, cada o es una masa, las líneas son resortes."
+       - Tabla: la columna de 1.0 Hz tiene 88 cm en el techo; las otras,
+         mucho menos.
+       - "El edificio vibra a 1 Hz; el sismo de 1 Hz lo mueve 6 veces
+          más: es resonancia, y la simulación lo encuentra sola."
+       - Barras: "los pisos de abajo se deforman más (deriva)."
+       - Última línea: "Se hicieron 4929 productos K·U con 4 hilos."
+
+   PASO 5 - Speedup (la prueba de que es más rápido)
+     Sale primero OpenMP, luego (otra tecla) Go. Mira la columna S(p).
+     Di: "S(p) es cuántas veces más rápido. En el producto de matrices
+          con 8 hilos va unas 5 veces más rápido, en C y en Go. K·U escala
+          menos (unas 2 veces) porque lo limita la memoria, no la CPU."
+     (Los números varían un poco en cada corrida; es normal.)
+
+   PASO 6 - El mismo sismo en 3 edificios (tarda ~40 s; explica mientras corre)
+     Sale: 3 tablas (edificio 20x50, 50x200 y 100x400). Mira las filas
+           sim_omp con p = 8, columna S(p).
+     Di: "Con el edificio chico, 8 hilos van 4 veces MÁS LENTO: hay poco
+          trabajo y coordinar hilos cuesta más. Con el de 40 mil nodos,
+          el mismo sismo tarda la MITAD. El paralelo sirve en los casos
+          grandes, que son los que importan."
+
+ CIERRE (1 frase):
+   "El mismo resultado que el secuencial, en una fracción del tiempo.
+    Lo siguiente es repartirlo entre varias computadoras con MPI."
+
+---------------------------------------------------------------------
+ SI ALGO FALLA EN VIVO
+---------------------------------------------------------------------
+ - Ventana se cierra o dice "gcc no se reconoce": falta instalar
+   WinLibs (paso 1 de arriba) o reiniciar la PC tras instalarlo.
+ - "go no se reconoce": instalar Go y reiniciar.
+ - Plan B: mostrar results\demo_omp_salida.txt (la salida del paso 4
+   ya guardada) y las figuras de results\figuras\.
+
+---------------------------------------------------------------------
+ PREGUNTAS PROBABLES (respuestas cortas)
+---------------------------------------------------------------------
+ ¿Por qué no llega a 8x con 8 hilos?
+   Los hilos comparten la memoria RAM y hay que sincronizarlos en cada
+   paso; además K·U hace pocas cuentas por cada dato que lee.
+ ¿Qué es una goroutine?
+   Una tarea liviana de Go; el runtime la reparte entre los hilos del
+   sistema operativo.
+ ¿Cómo saben que está bien?
+   Cada versión paralela se compara automáticamente con la secuencial
+   (pasos 2 y 3).

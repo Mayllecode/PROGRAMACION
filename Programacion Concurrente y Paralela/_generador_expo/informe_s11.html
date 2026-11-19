@@ -1,0 +1,328 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Informe de avance S8 a S11</title>
+<style>
+  @page { size: A4; margin: 18mm 17mm 18mm 17mm; }
+  :root { --ink: #1B2433; --navy: #13233F; --blue: #2F6DB5; --orange: #E4572E; --green: #3A9D5D; --teal: #159A9C; --purple: #7A5CC0; --gold: #F2B134; --muted: #6B7686; --tint: #EEF2F7; --line: #D5DCE6; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.45; margin: 0; background: #fff; }
+  h1 { font-size: 24pt; color: var(--navy); margin: 0 0 4mm; line-height: 1.15; }
+  h2 { font-size: 15pt; color: var(--navy); margin: 9mm 0 3mm; padding-top: 1mm; break-after: avoid; }
+  h2 .n { color: var(--orange); margin-right: 2mm; }
+  h3 { font-size: 11.5pt; color: var(--navy); margin: 5mm 0 2mm; break-after: avoid; }
+  p { margin: 0 0 2.5mm; }
+  ul, ol { margin: 0 0 3mm; padding-left: 6mm; }
+  li { margin-bottom: 1mm; }
+  code, .mono { font-family: Consolas, "Cascadia Mono", monospace; font-size: 9.2pt; background: var(--tint); padding: 0 1mm; border-radius: 1mm; }
+  pre { font-family: Consolas, monospace; font-size: 8.8pt; background: var(--navy); color: #E8EEF6; padding: 3mm 4mm; border-radius: 2mm; margin: 2mm 0 3mm; white-space: pre-wrap; break-inside: avoid; }
+  pre .c { color: #8FA3BF; font-style: italic; }
+  table { border-collapse: collapse; width: 100%; margin: 2mm 0 3.5mm; font-size: 9.5pt; break-inside: avoid; }
+  th { background: var(--navy); color: #fff; text-align: left; padding: 1.6mm 2mm; font-weight: 600; }
+  td { padding: 1.4mm 2mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  tr:nth-child(even) td { background: #F7F9FC; }
+  td.r, th.r { text-align: right; }
+  .portada { height: 255mm; display: flex; flex-direction: column; justify-content: space-between; break-after: page; }
+  .portada .top { color: var(--muted); font-size: 10pt; letter-spacing: 2px; text-transform: uppercase; }
+  .portada .kicker { color: var(--orange); font-weight: 700; letter-spacing: 2px; font-size: 10pt; margin-bottom: 3mm; }
+  .portada .big { font-size: 32pt; font-weight: 700; color: var(--navy); line-height: 1.1; }
+  .portada .big span { color: var(--orange); }
+  .portada .sub { font-size: 13pt; color: var(--muted); margin-top: 4mm; }
+  .portada .datos { font-size: 10.5pt; }
+  .portada .datos b { color: var(--navy); }
+  .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3mm; margin: 8mm 0; }
+  .stat { background: var(--tint); border-radius: 2.5mm; padding: 3.5mm; }
+  .stat .v { font-size: 22pt; font-weight: 700; line-height: 1.1; }
+  .stat .t { font-weight: 600; color: var(--navy); font-size: 9.5pt; margin-top: 1mm; }
+  .box { background: var(--tint); border-radius: 2.5mm; padding: 3mm 4mm; margin: 3mm 0; break-inside: avoid; }
+  .box.warn { background: #FDF0DA; }
+  .box.ok { background: #E6F3EA; }
+  .box b.t { color: var(--navy); }
+  figure { margin: 3mm 0 4mm; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; border: 1px solid var(--line); border-radius: 1.5mm; }
+  figure img.consola { max-height: 104mm; }
+  figure.media img.consola { max-width: 80%; }
+  figcaption { font-size: 8.8pt; color: var(--muted); margin-top: 1.5mm; text-align: left; }
+  figcaption b { color: var(--ink); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 5mm; }
+  .pagebreak { break-before: page; }
+  .guion td:first-child { width: 14mm; font-weight: 700; color: var(--orange); }
+  .guion td:nth-child(2) { width: 38mm; font-weight: 600; }
+  .guion td:last-child { width: 14mm; text-align: right; color: var(--muted); }
+  .tag { display: inline-block; font-size: 8pt; font-weight: 700; padding: 0.3mm 2mm; border-radius: 3mm; color: #fff; background: var(--green); }
+  .toc { columns: 2; font-size: 10pt; }
+  .toc div { margin-bottom: 1mm; }
+  .small { font-size: 9pt; color: var(--muted); }
+</style>
+</head>
+<body>
+
+<!-- ============ PORTADA ============ -->
+<section class="portada">
+  <div>
+    <div class="top">Universidad Nacional Mayor de San Marcos · FISI</div>
+    <div class="top" style="letter-spacing:0;text-transform:none;margin-top:1mm">Programación Concurrente y Paralela · Proyecto 2 · 2026-2</div>
+  </div>
+  <div>
+    <div class="kicker">INFORME DE AVANCE · SEMANAS 8 A 11</div>
+    <div class="big">Simulación paralela de la respuesta sísmica: <span>memoria distribuida con MPI</span></div>
+    <div class="sub">Diseño del reparto, Cannon, SUMMA y la simulación con el edificio repartido entre procesos (Hito H3). Incluye cómo presentarlo y la demo en vivo.</div>
+    <div class="stats">
+      <div class="stat"><div class="v" style="color:var(--green)">34</div><div class="t">pruebas OK con 16 procesos</div></div>
+      <div class="stat"><div class="v" style="color:var(--blue)">0</div><div class="t">bits distintos frente al secuencial</div></div>
+      <div class="stat"><div class="v" style="color:var(--orange)">3.96×</div><div class="t">simulador con 9 procesos</div></div>
+      <div class="stat"><div class="v" style="color:var(--purple)">H3</div><div class="t">hito cumplido</div></div>
+    </div>
+  </div>
+  <div class="datos">
+    <p><b>Equipo:</b> Maylle Poma, Fran Diego · [integrantes]<br><b>Docente:</b> [nombre del docente]<br><b>Fecha:</b> 5 de noviembre de 2026</p>
+    <p class="small">Mediciones y capturas: laptop DESKTOP-62M3KIP (Intel Core Ultra 5 235U, 12 núcleos / 14 hilos, 15.4 GB, Windows 11), gcc 16.2 -O2, MS-MPI. Todas las capturas son de consola real, tomadas en esa PC ejecutando cada comando.</p>
+  </div>
+</section>
+
+<!-- ============ ÍNDICE Y RESUMEN ============ -->
+<h1>Contenido</h1>
+<div class="toc">
+  <div>1. Resumen del avance</div>
+  <div>2. Semana 8: diseño del reparto</div>
+  <div>3. Semana 9: Cannon</div>
+  <div>4. Semana 10: SUMMA y tabla comparativa</div>
+  <div>5. Semana 11: simulación distribuida (H3)</div>
+  <div>6. Qué dicen los resultados</div>
+  <div>7. Cómo presentarlo al profesor (con el PPT)</div>
+  <div>8. La demo en vivo, paso a paso</div>
+  <div>9. Preguntas probables</div>
+  <div>10. Pendientes y supuestos</div>
+  <div>Anexo: archivos y cómo reproducir</div>
+</div>
+
+<h2><span class="n">1</span>Resumen del avance</h2>
+<p>En la exposición de S7 mostramos memoria compartida: OpenMP y Go, varios hilos que comparten la memoria de un computador. Este avance cubre el nivel siguiente del cronograma: <b>memoria distribuida con MPI</b>. Aquí cada proceso tiene su propia memoria y solo se comunica con mensajes, como en un clúster.</p>
+<table>
+  <tr><th>Semana</th><th>Entregable del cronograma</th><th>Estado</th></tr>
+  <tr><td>S8</td><td>Simulación de un edificio pequeño con OpenMP · informe de avance · diseño del reparto para MPI</td><td><span class="tag">hecho</span> (demo de S7, este informe y <code>docs/DISENO_REPARTO_MPI.md</code>)</td></tr>
+  <tr><td>S9</td><td>Malla 2D de procesos, Cannon con desplazamientos circulares, mismo resultado con 1, 4, 9 y 16 procesos</td><td><span class="tag">hecho</span></td></tr>
+  <tr><td>S10</td><td>SUMMA con <code>MPI_Bcast</code>, bytes y mensajes medidos frente a Cannon, reparto de los nodos de la estructura</td><td><span class="tag">hecho</span></td></tr>
+  <tr><td>S11</td><td><b>H3:</b> cada proceso avanza su parte de la estructura, intercambia fronteras y se balancea por nnz; mismos desplazamientos que el secuencial con 1, 4, 9 y 16 procesos</td><td><span class="tag">hecho</span></td></tr>
+</table>
+<div class="box ok"><b class="t">Hito H3 cumplido.</b> La suite <code>test_mpi</code> pasa con 1, 2, 4, 6, 9 y 16 procesos. El simulador con MPI da resultados <b>idénticos bit a bit</b> a los del secuencial, no solo "parecidos". Los CSV de la demo con 4, 9 y 16 procesos son iguales byte por byte a los de la demo secuencial.</div>
+<p>En la demo, el programa visual tiene ahora un <b>4.º motor, MPI</b>: con el edificio de 40 100 nodos y 8 procesos, la medición del visual da <b>0.59 s → 0.18 s (3.3×)</b>, con el resultado idéntico al secuencial (capturas 10 y 11). En las mediciones, el simulador llega a <b>3.96×</b> con 9 procesos (edificio de 50 × 200) y a <b>3.6×</b> con 8 procesos en el edificio grande (100 × 400). En la misma laptop, OpenMP con 8 hilos daba 2.1×. La medición también encontró un problema: <b>con 16 procesos, más que los 14 hilos de la laptop, la espera activa de MS-MPI hunde el rendimiento</b>, y se corrige con una opción de <code>mpiexec</code> (sección 6).</p>
+
+<h3>Cómo se instaló MPI en la laptop</h3>
+<p>Usamos <b>MS-MPI</b>, la implementación de Microsoft, en vez de WSL2 con OpenMPI como decía el README. Se instaló así: <code>winget install -e --id Microsoft.msmpi</code> y <code>winget install -e --id Microsoft.msmpisdk</code>. Las dos implementan el mismo estándar MPI, así que el código de <code>src/mpi/</code> es el mismo y en Linux compila con <code>mpicc</code>. Solo cambia cómo se compila, y eso lo resuelve el <code>Makefile</code>.</p>
+<figure class="media"><img class="consola" src="../Exposicion/capturas_s11/c01_compilar.png"><figcaption><b>Captura 1.</b> <code>mingw32-make -B mpi</code> recompila los 4 programas MPI con gcc 16.2 y MS-MPI, sin ninguna advertencia.</figcaption></figure>
+
+<!-- ============ S8 ============ -->
+<h2><span class="n">2</span>Semana 8: diseño del reparto</h2>
+<p>En memoria distribuida, lo primero es decidir <b>qué guarda cada proceso</b>, porque lo que no tiene hay que mandárselo. Las dos decisiones, con sus alternativas descartadas, están en <code>docs/DISENO_REPARTO_MPI.md</code>.</p>
+<div class="cols">
+  <div class="box"><b class="t">Matrices densas: bloques en una malla 2D.</b> El proceso (i, j) guarda el bloque (i, j) de A, B y C. Para su bloque de C necesita una fila de bloques de A y una columna de B: <b>2n²/√p</b> datos en vez de n² con un reparto por filas. Con 16 procesos, 4 veces menos. Si n no es múltiplo de q se rellena con ceros.</div>
+  <div class="box"><b class="t">Edificio: franjas de pisos.</b> Los nodos se numeran piso por piso, así que un rango contiguo de nodos es una franja de pisos. La fila de K de un nodo solo toca a sus vecinos: cada proceso necesita, en cada paso, <b>la fila de nodos de abajo y la de arriba</b> (sus <i>nodos fantasma</i>).</div>
+</div>
+<table>
+  <tr><th>Por proceso y por paso</th><th>Cuánto</th><th>Cómo cambia con p</th></tr>
+  <tr><td>Cálculo de K·U</td><td>≈ 2 · nnz/p · k operaciones</td><td>baja como 1/p</td></tr>
+  <tr><td>Datos recibidos</td><td>≤ 2 · (vanos + 1) · k · 8 bytes</td><td>no cambia</td></tr>
+  <tr><td>Mensajes</td><td>≤ 2 (vecino de abajo y de arriba)</td><td>no cambia</td></tr>
+</table>
+<p>Por eso la razón comunicación/cálculo crece como <b>p / pisos</b>: el reparto en franjas funciona bien mientras cada proceso tenga varios pisos. Con 16 procesos y 100 pisos, cada uno tiene al menos 6.</p>
+<p><b>Balanceo de carga.</b> <code>partition_rows</code> reparte por número de filas o por número de no nulos (nnz). El costo de K·U es proporcional a nnz. En el edificio casi todas las filas tienen 5 no nulos, así que los dos modos dan casi lo mismo (desbalance 1.004 en el edificio de 100 × 400). En una matriz con filas desparejas, repartir por filas da un desbalance de 3.5 y repartir por nnz lo baja a 1.0 (grupo 5 de las pruebas).</p>
+<p><b>Lo demás de S8</b> ya estaba hecho en S7: la simulación de un edificio pequeño con OpenMP (<code>make demo-omp</code>). Este documento es el informe de avance.</p>
+
+<!-- ============ S9 ============ -->
+<h2><span class="n">3</span>Semana 9: Cannon</h2>
+<p>Hay p = q² procesos en una malla q × q <b>periódica</b>, es decir, cada fila y cada columna se cierra en anillo (<code>MPI_Cart_create</code> con <code>periods = 1</code>). Después de un <b>sesgo inicial</b>, el proceso (i, j) tiene A(i, i+j) y B(i+j, j): los índices internos coinciden y puede multiplicar. Luego hace q veces: multiplicar los bloques, rotar A una posición a la izquierda y B una hacia arriba.</p>
+<pre>shift(a, grid, 1, -fila);       <span class="c">// sesgo: la fila i de A rota i lugares a la izquierda</span>
+shift(b, grid, 0, -columna);    <span class="c">// sesgo: la columna j de B rota j lugares hacia arriba</span>
+for (s = 0; s &lt; q; s++) {
+    local_gemm(a, b, c);        <span class="c">// C_local += A_local · B_local</span>
+    shift(a, grid, 1, -1);      <span class="c">// A una a la izquierda</span>
+    shift(b, grid, 0, -1);      <span class="c">// B una hacia arriba</span>
+}                               <span class="c">// shift = MPI_Cart_shift + MPI_Sendrecv_replace</span></pre>
+<p><code>MPI_Sendrecv_replace</code> manda y recibe en la misma llamada y sobre el mismo búfer. Así todos rotan a la vez, sin interbloqueo y sin memoria extra. Cannon <b>exige p cuadrado</b>: con 2, 6 u 8 procesos devuelve -1 en todos (se prueba en el grupo 8).</p>
+<p><b>Verificación:</b> 5 casos contra el producto <code>naive</code> dentro de ε = 1e-9: 64², 37² (no es múltiplo de q), 50×30·30×70 (rectangular), 1×1 y 100×3·3×5. El error real es ~1e-15. No es bit a bit porque C(i,j) empieza a acumular por el bloque (i+j) mod q, y eso cambia el orden de las sumas.</p>
+<figure><img class="consola" src="../Exposicion/capturas_s11/c03_test_mpi_p9.png"><figcaption><b>Captura 2.</b> <code>mpiexec -n 9 build\test_mpi.exe</code>: la suite completa con 9 procesos (malla 3 × 3). 34 pruebas OK, 0 fallas.</figcaption></figure>
+
+<!-- ============ S10 ============ -->
+<h2><span class="n">4</span>Semana 10: SUMMA y tabla comparativa</h2>
+<p>SUMMA calcula lo mismo, pero <b>los bloques no cambian de dueño</b>. El índice interno se recorre en paneles. En cada uno, el proceso que tiene el panel de A lo <b>difunde</b> a su fila de procesos y el que tiene el panel de B a su columna (<code>MPI_Bcast</code> en comunicadores de fila y de columna creados con <code>MPI_Cart_sub</code>). Funciona con <b>cualquier p</b>: 2 = 1×2, 6 = 2×3, 8 = 2×4. Con malla q × q hace q pasos, como Cannon.</p>
+<pre>MPI_Bcast(panelA, ..., dueno_A, comunicador_de_fila);
+MPI_Bcast(panelB, ..., dueno_B, comunicador_de_columna);
+local_gemm(panelA, panelB, c);</pre>
+
+<h3>Tabla comparativa del caso denso (entregable de S10)</h3>
+<p>n = 1024, T(1) = 0.298 s (<code>seq_ikj</code>). Se mide la llamada completa: repartir A y B desde el proceso 0, calcular y juntar C. Mensajes y MB son los recibidos durante el cálculo, sumando todos los procesos.</p>
+<table>
+  <tr><th>p</th><th>Malla</th><th class="r">Cannon [s]</th><th class="r">S(p)</th><th class="r">SUMMA [s]</th><th class="r">S(p)</th><th class="r">Cannon msgs / MB</th><th class="r">SUMMA msgs / MB</th></tr>
+  <tr><td>2</td><td>1×2</td><td class="r">—</td><td class="r">—</td><td class="r">0.157</td><td class="r">1.90</td><td class="r">—</td><td class="r">2 / 8.4</td></tr>
+  <tr><td>4</td><td>2×2</td><td class="r">0.115</td><td class="r">2.58</td><td class="r">0.113</td><td class="r">2.63</td><td class="r">12 / 25.2</td><td class="r">8 / 16.8</td></tr>
+  <tr><td>8</td><td>2×4</td><td class="r">—</td><td class="r">—</td><td class="r">0.084</td><td class="r">3.57</td><td class="r">—</td><td class="r">40 / 33.6</td></tr>
+  <tr><td>9</td><td>3×3</td><td class="r">0.084</td><td class="r">3.56</td><td class="r">0.084</td><td class="r">3.55</td><td class="r">48 / 44.9</td><td class="r">36 / 33.7</td></tr>
+  <tr><td>16</td><td>4×4</td><td class="r">0.128</td><td class="r">2.32</td><td class="r">0.145</td><td class="r">2.06</td><td class="r">120 / 62.9</td><td class="r">96 / 50.3</td></tr>
+  <tr><td>16*</td><td>4×4</td><td class="r">0.075</td><td class="r"><b>3.96</b></td><td class="r">0.075</td><td class="r"><b>3.97</b></td><td class="r">120 / 62.9</td><td class="r">96 / 50.3</td></tr>
+</table>
+<p class="small">* Con espera pasiva (<code>-env MSMPI_PROGRESS_SPIN_LIMIT 1</code>), ver sección 6. Con n = 2048 (T(1) = 2.89 s, <code>seq_blocked64</code>), Cannon llega a 3.32× y SUMMA a 3.89× (p = 8). Ahí cada matriz ocupa 32 MB y el cálculo local queda limitado por la RAM.</p>
+<ul>
+  <li><b>Casi el mismo tiempo.</b> Con malla cuadrada los dos hacen q pasos con bloques del mismo tamaño.</li>
+  <li><b>Cannon recibe entre 25 y 50 % más datos</b>, por el sesgo inicial. Lo medido coincide con la fórmula: SUMMA recibe 2·p·(q−1) mensajes (96 con p = 16) y Cannon lo mismo más 24 del sesgo (120).</li>
+  <li><b>SUMMA corre con 2 y 8 procesos</b>. Con 8 (malla 2×4) es de lo más rápido de la tabla.</li>
+</ul>
+<figure><img src="../matmul-paralelo/results/figuras/10_mpi_denso.png"><figcaption><b>Figura 1.</b> Speedup de Cannon y SUMMA (n = 1024) y en qué se va el tiempo. La parte amarilla es repartir A, B y juntar C desde el proceso 0, y no baja con p.</figcaption></figure>
+<figure><img src="../matmul-paralelo/results/figuras/11_mpi_comunicacion.png"><figcaption><b>Figura 2.</b> Mensajes y MB recibidos durante el cálculo (n = 2048). La diferencia entre Cannon y SUMMA es el sesgo inicial.</figcaption></figure>
+<figure><img class="consola" src="../Exposicion/capturas_s11/c07_cannon_summa.png"><figcaption><b>Captura 3.</b> <code>bench_mpi</code> con n = 1024 y 4, 9 y 16 procesos (el de 16 con espera pasiva). Las columnas <i>mensajes</i> y <i>MB</i> muestran la diferencia de comunicación. Es una corrida de 3 repeticiones: los tiempos varían un poco respecto a la tabla, que es la mediana de 5.</figcaption></figure>
+
+<!-- ============ S11 ============ -->
+<h2><span class="n">5</span>Semana 11: simulación distribuida (Hito H3)</h2>
+<p><code>sim_run_mpi</code> recibe los mismos datos que el simulador secuencial (en el proceso 0), reparte el edificio en franjas y, en cada paso de tiempo, cada proceso:</p>
+<ol>
+  <li><b>Actualiza U(n+1) de sus nodos</b>, solo con datos locales.</li>
+  <li><b>Intercambia fronteras</b> con el vecino de abajo y el de arriba: <code>MPI_Irecv</code> y <code>MPI_Isend</code> no bloqueantes y luego <code>MPI_Waitall</code>. Los fantasmas se reciben directamente en su lugar, sin copiar.</li>
+  <li><b>Actualiza picos y derivas.</b> La deriva usa el nodo de abajo, que puede ser fantasma.</li>
+  <li><b>Calcula K·U de sus filas</b> con los fantasmas recién recibidos.</li>
+</ol>
+<p>Un solo intercambio por paso sirve para la deriva y para el K·U del paso siguiente. La lista de fantasmas se arma <b>una vez</b> al inicio: cada proceso pide a cada vecino los nodos que necesita, con <code>MPI_Alltoall</code> y <code>MPI_Alltoallv</code>. Por eso funciona con cualquier matriz dispersa y no solo con el edificio, como prueba el grupo 6 con una matriz aleatoria.</p>
+<figure><img class="consola" src="../Exposicion/capturas_s11/c04_demo_reparto.png"><figcaption><b>Captura 4.</b> <code>mpiexec -n 4 build\demo_sismo_mpi.exe 10 4</code>, primera pantalla. Al final está la tabla del reparto: el proceso 1 tiene los nodos 13 a 24 (parte del piso 3, el 4 y parte del 5), 55 no nulos, 10 fantasmas y 2 vecinos. En cada paso viajan 6 mensajes.</figcaption></figure>
+<figure><img class="consola" src="../Exposicion/capturas_s11/c05_demo_resultados.png"><figcaption><b>Captura 5.</b> El resto de la salida de la misma demo: los mismos desplazamientos, derivas y la resonancia a 1 Hz (6 veces más desplazamiento) que en la demo secuencial de S6 y la de OpenMP de S7.</figcaption></figure>
+
+<h3>Verificación del criterio H3</h3>
+<p>El criterio dice: <i>"la simulación con MPI da los mismos desplazamientos que la secuencial con 1, 4, 9 y 16 procesos"</i>. Lo comprobamos de tres maneras:</p>
+<table>
+  <tr><th>Prueba</th><th>Qué compara</th><th>Resultado</th></tr>
+  <tr><td>Grupo 6 de <code>test_mpi</code></td><td>K·U distribuido en 3 matrices × 2 repartos contra <code>spmm_csr</code></td><td>idéntico bit a bit</td></tr>
+  <tr><td>Grupo 7 de <code>test_mpi</code></td><td>u final, picos, derivas e historia del techo contra <code>sim_run</code>: edificio 12×5 con 4 sismos, vibración libre con u0 y v0, y un edificio de 3×2 con más procesos que pisos</td><td>idéntico bit a bit</td></tr>
+  <tr><td>CSV de la demo</td><td><code>respuesta.csv</code>, <code>mapa_deriva.csv</code> e <code>historia_techo.csv</code> con 4, 9 y 16 procesos contra la demo secuencial</td><td>iguales byte por byte</td></tr>
+</table>
+<div class="box"><b class="t">¿Por qué idéntico y no "dentro de ε"?</b> Cada fila de K·U la calcula un solo proceso, con sus no nulos en el mismo orden que <code>spmm_csr</code>, y la actualización de U usa exactamente las mismas operaciones. No hay ninguna razón para que cambie un bit. Si cambiara, sería un error de reparto o un fantasma desactualizado, y la prueba lo detectaría.</div>
+<figure class="media"><img class="consola" src="../Exposicion/capturas_s11/c02_test_mpi_todos.png"><figcaption><b>Captura 6.</b> <code>mingw32-make test-mpi</code>: la suite con 1, 2, 4, 6, 9 y 16 procesos, 0 fallas en todas. Hay distinto número de pruebas porque Cannon solo aplica con p cuadrado y la prueba del balanceo solo con p &gt; 1.</figcaption></figure>
+<figure class="media"><img class="consola" src="../Exposicion/capturas_s11/c06_identicos.png"><figcaption><b>Captura 7.</b> La demo secuencial y la de 16 procesos escriben los mismos tres CSV: <code>fc /b</code> no encuentra ninguna diferencia.</figcaption></figure>
+
+<h3>Speedup del simulador</h3>
+<p>400 pasos, 8 sismos, reparto por nnz, mediana de 5. T(1) es lo más rápido medido con un proceso. En el edificio grande fue MPI con p = 1 (0.627 s), un poco más rápido que los dos secuenciales (0.703 y 0.672 s). Lo usamos como T(1) para no inflar el speedup, el mismo criterio que en S7.</p>
+<table>
+  <tr><th>Edificio</th><th class="r">T(1)</th><th class="r">S(2)</th><th class="r">S(4)</th><th class="r">S(8)</th><th class="r">S(9)</th><th class="r">S(16)</th><th class="r">S(16) pasiva</th><th class="r">% comunic. (p = 8)</th></tr>
+  <tr><td>20 × 50 (1 020 nodos)</td><td class="r">0.017 s</td><td class="r">1.29</td><td class="r">2.19</td><td class="r">3.50</td><td class="r">3.38</td><td class="r">0.03</td><td class="r">1.64</td><td class="r">51 %</td></tr>
+  <tr><td>50 × 200 (10 050 nodos)</td><td class="r">0.165 s</td><td class="r">1.23</td><td class="r">2.04</td><td class="r">3.64</td><td class="r"><b>3.96</b></td><td class="r">0.26</td><td class="r">3.04</td><td class="r">46 %</td></tr>
+  <tr><td>100 × 400 (40 100 nodos)</td><td class="r">0.627 s</td><td class="r">1.21</td><td class="r">2.32</td><td class="r">3.57</td><td class="r">3.71</td><td class="r">0.64</td><td class="r">2.88</td><td class="r">28 %</td></tr>
+</table>
+<figure><img src="../matmul-paralelo/results/figuras/12_mpi_simulador.png"><figcaption><b>Figura 3.</b> Speedup del simulador por tamaño de edificio, OpenMP de S7 en la misma laptop (punteado) y la fracción del tiempo en comunicación. Las estrellas son 16 procesos con espera pasiva.</figcaption></figure>
+<figure><img class="consola" src="../Exposicion/capturas_s11/c08_simulador.png" style="max-height:130mm"><figcaption><b>Captura 8.</b> <code>bench_sim_mpi</code> con 1 y con 8 procesos (3 repeticiones). Cada versión se verifica contra el secuencial antes de medir. Se nota el ruido de la laptop: con 8 procesos, el reparto por filas y por nnz deberían tardar igual y aquí difieren en 0.04 s.</figcaption></figure>
+
+<h3>La carrera: el mismo cálculo con 1, 2, 4 y 9 procesos</h3>
+<p>Para que la diferencia se vea en vivo, <code>carrera_mpi</code> corre el edificio más grande (100 × 400 = 40 100 nodos) con 8 sismos a la vez y 20 s de sismo (3 286 pasos). Primero lo corre con 1 proceso usando el <b>simulador secuencial</b>, y luego con 2, 4 y 9 procesos usando MPI. Cada línea muestra el tiempo de principio a fin (incluido repartir el edificio y juntar el resultado), cuántas veces más rápido va y si el resultado es idéntico. Esto último se comprueba con una huella (hash) del desplazamiento final y de las derivas.</p>
+<figure><img class="consola" src="../Exposicion/capturas_s11/e5_paso5.png"><figcaption><b>Captura 9.</b> La carrera, paso 5 de <code>DEMO_MPI.bat</code> (también <code>make carrera-mpi</code>): de <b>4.73 s</b> con 1 proceso a <b>1.38 s</b> con 9, es decir 3.4 veces más rápido, con <b>identico: SI</b> en cada fila. Entre corridas varía entre 3.2 y 3.7 veces.</figcaption></figure>
+
+<!-- ============ INTERPRETACIÓN ============ -->
+<h2 class="pagebreak"><span class="n">6</span>Qué dicen los resultados</h2>
+<table>
+  <tr><th style="width:42%">Lo que se ve</th><th>Por qué</th></tr>
+  <tr><td>El speedup se queda en ~3.5–4× con 8 o 9 procesos</td><td>La laptop tiene solo <b>2 núcleos de rendimiento</b>; los otros 10 son más lentos (8 eficientes y 2 de bajo consumo). Con 9 procesos casi todos corren en núcleos lentos, y todos comparten la misma RAM.</td></tr>
+  <tr><td>Con 16 procesos el simulador es más lento que con 1 (0.03× a 0.64×)</td><td><b>Más procesos (16) que hilos de hardware (14).</b> MS-MPI espera los mensajes con <i>espera activa</i>: un bucle que pregunta "¿ya llegó?" sin soltar el núcleo. El proceso que espera le quita la CPU justo al vecino que debe mandarle el dato. El simulador se sincroniza con sus vecinos 400 veces, así que el efecto se acumula.</td></tr>
+  <tr><td>Con <code>MSMPI_PROGRESS_SPIN_LIMIT=1</code>, 16 procesos vuelven a ~3×</td><td>Con espera pasiva, el que espera suelta el núcleo. Con 8 procesos, en cambio, la espera pasiva es un poco <b>más lenta</b> (0.188 s contra 0.172 s en 100 × 400), porque despertar cuesta tiempo. Solo conviene con más procesos que núcleos.</td></tr>
+  <tr><td>El producto denso sufre menos con 16 procesos</td><td>Se sincroniza solo q = 4 veces (no 400) y cada paso tiene mucho cálculo.</td></tr>
+  <tr><td>El edificio grande tiene menos comunicación</td><td>Se comunican siempre 2 filas de nodos, pero el cálculo crece con el edificio: 28 % del tiempo en comunicación en 100 × 400 contra 51 % en 20 × 50, con 8 procesos.</td></tr>
+  <tr><td>MPI con 8 procesos (3.6×) supera a OpenMP con 8 hilos (2.1×) en la misma laptop</td><td>En <code>sim_run_omp</code> todos los hilos se esperan en una <b>barrera</b> dos veces por paso; en MPI cada proceso espera solo a sus 2 vecinos. Además, cada proceso trabaja en su propia memoria. <i>Son mediciones de días distintos (OpenMP del 15/10): conviene confirmarlo en la máquina oficial.</i></td></tr>
+  <tr><td>Repartir por filas o por nnz da lo mismo en el edificio</td><td>El desbalance por filas ya es 1.004. La diferencia aparece en matrices de filas desparejas (de 3.5 a 1.0 en la prueba).</td></tr>
+</table>
+
+<!-- ============ CÓMO PRESENTARLO ============ -->
+<h2><span class="n">7</span>Cómo presentarlo al profesor (con el PPT)</h2>
+<p>Archivo: <code>Exposicion/Avance_S8_S11_MPI.pptx</code>, con 12 láminas (copia en PDF: <code>Avance_S8_S11_MPI.pdf</code>). Cada lámina tiene en las <b>notas del orador</b> qué decir, qué señalar y qué responder si te preguntan. Ábrelas con la Vista del moderador (Alt + F5). El total es de unos <b>18 minutos</b> con la demo. Si te dan 10, salta las láminas 5 y 10 y deja la demo en los pasos 1, 3 y 5 (la carrera nunca se salta: es lo que muestra la diferencia).</p>
+<table class="guion">
+  <tr><th>Lámina</th><th>Tema</th><th>Qué decir (idea central)</th><th>Min</th></tr>
+  <tr><td>1</td><td>Portada</td><td>"En S7 mostramos hilos que comparten memoria; hoy, procesos con memoria propia que solo se hablan con mensajes, como en un clúster."</td><td>0.5</td></tr>
+  <tr><td>2</td><td>Dónde estamos</td><td>H1 y H2 cumplidos; hoy cerramos S9–S11 con el H3. Recorre las 4 cifras: 34 pruebas, 0 bits distintos, 4×, 2 algoritmos.</td><td>1</td></tr>
+  <tr><td>3</td><td>S8 · Diseño del reparto</td><td>Denso: malla 2D, cada proceso necesita una fila de A y una columna de B. Edificio: franjas de pisos; los recuadros rojos son los fantasmas del proceso 1.</td><td>1.5</td></tr>
+  <tr><td>4</td><td>S9 · Cannon</td><td>Lee una casilla: (1,2) tiene A10 y B02, el 0 coincide y puede multiplicar. Sesgo, multiplicar, rotar. <code>Sendrecv_replace</code>: todos rotan a la vez, sin interbloqueo.</td><td>1.5</td></tr>
+  <tr><td>5</td><td>S10 · SUMMA</td><td>Los bloques no se mueven: se difunden por fila y columna. Funciona con cualquier p.</td><td>1.5</td></tr>
+  <tr><td>6</td><td>S10 · Tabla comparativa</td><td>Mismo tiempo (3.56 contra 3.55 con 9); Cannon recibe más por el sesgo, 120 contra 96 mensajes, como dice la fórmula.</td><td>1.5</td></tr>
+  <tr><td>7</td><td>S11 · Simulación distribuida</td><td>Los 4 pasos de cada proceso; la tabla real de la demo: proceso 1, nodos 13 a 24, 10 fantasmas; balanceo por nnz, 55 cada uno.</td><td>2</td></tr>
+  <tr><td>8</td><td>H3 · Verificación</td><td>Pasa con 1, 4, 9 y 16 procesos (y con 2 y 6). Idéntico bit a bit; <code>fc /b</code> no encuentra diferencias.</td><td>1.5</td></tr>
+  <tr><td>9</td><td>Resultados</td><td>Hasta 4× con 9 procesos; MPI 3.6× contra OpenMP 2.1× con 8.</td><td>1.5</td></tr>
+  <tr><td>10</td><td>Lo que dicen los números</td><td>16 procesos en 14 hilos: la espera activa lo hunde (0.64×) y la espera pasiva lo arregla (2.88×). Núcleos distintos y tamaño del edificio.</td><td>1.5</td></tr>
+  <tr><td>—</td><td>Demo en vivo</td><td>Sin lámina: después de la 10, cambia a <code>VISUAL.bat</code> (sección 8). Aclara que todo corre en una laptop y que el clúster viene en S12–S13.</td><td>4</td></tr>
+  <tr><td>11</td><td>La medición (B)</td><td>"El mismo sismo: de 0,59 s a 0,18 s con 8 procesos MPI, y los 4 motores idénticos." Es la respuesta a "¿sirve el paralelismo?".</td><td>1.5</td></tr>
+  <tr><td>12</td><td>Lo que sigue</td><td>S12–S13: el clúster (MPI en varias computadoras), el K·U de cada proceso en la GPU y solapar comunicación con cálculo. Preguntas.</td><td>1</td></tr>
+</table>
+<div class="box warn"><b class="t">Antes de presentar, completa:</b> el nombre del docente y de los integrantes en la portada del PPT y de este informe (están como <code>[nombre del docente]</code> e <code>[integrantes]</code>).</div>
+
+<!-- ============ DEMO ============ -->
+<h2 class="pagebreak"><span class="n">8</span>La demo en vivo, paso a paso</h2>
+<p>La demo es el <b>programa visual</b> de la expo pasada (<code>matmul-paralelo\VISUAL.bat</code>), que ahora tiene un <b>cuarto motor: MPI</b>. El visual lanza por detrás <code>mpiexec -n p build\motor_mpi.exe</code>. En cada cuadro les pide a los procesos avanzar unos pasos y recibe el desplazamiento de todos los nodos: así dibuja el edificio que calculó MPI y comprueba en vivo que es idéntico al del secuencial. Necesita MS-MPI instalado, así que conviene usar <b>esta laptop</b>. El guion completo, con capturas de cada pantalla y lo que hay que decir, está en <code>Guion_S8_S11_MPI.pdf</code>.</p>
+<div class="box"><b class="t">Antes de empezar:</b> laptop enchufada o en modo "Máximo rendimiento"; navegador y programas pesados cerrados; <code>VISUAL.bat</code> abierto y maximizado, en la bienvenida.</div>
+<table>
+  <tr><th style="width:8mm">#</th><th style="width:38mm">Teclas</th><th>Qué se ve y qué decir</th></tr>
+  <tr><td>1</td><td>cualquier tecla, <b>2</b>, <b>Espacio</b></td><td>Edificio chico (50 nodos), sismo de 1 Hz (resonancia). En la carrera, los 4 motores dicen <b>✓ idéntico</b>. Con 50 nodos el paralelo pierde, MPI también: coordinar cuesta más que la cuenta.</td></tr>
+  <tr><td>2</td><td><b>M</b> hasta "motor MPI", <b>V</b></td><td>Vista por proceso: cada color es un proceso MPI con su franja de pisos. A la derecha, el reparto y los fantasmas de cada proceso.</td></tr>
+  <tr><td>3</td><td><b>V</b>, <b>E</b> tres veces</td><td>Edificio muy grande (40 100 nodos): MPI gana la carrera (~1.9× con 4 procesos) y sigue idéntico.</td></tr>
+  <tr><td>4</td><td><b>+</b> hasta 8, <b>V</b></td><td>8 franjas de colores; MPI ~2.4× en la carrera, donde los 4 motores comparten la laptop.</td></tr>
+  <tr><td>5</td><td><b>B</b> (unos 30 s)</td><td>Medición en serio, cada motor solo: secuencial 0.59 s; <b>MPI con 8 procesos 0.18 s = 3.3×</b>; OpenMP 2.6×; Go 1.7×.</td></tr>
+</table>
+<figure><img class="consola" src="../Exposicion/capturas_s11/v5_muy_grande_8.png"><figcaption><b>Captura 10.</b> El visual con el edificio de 40 100 nodos y 8 procesos MPI (paso 4): cada color es un proceso; abajo, la carrera de los 4 motores, todos idénticos.</figcaption></figure>
+<figure><img class="consola" src="../Exposicion/capturas_s11/v6_medicion.png"><figcaption><b>Captura 11.</b> La medición en serio (tecla B): con 8 procesos, MPI simula los 400 pasos en 0.18 s, contra 0.59 s del secuencial (3.3×).</figcaption></figure>
+<p>La demo por consola (<code>DEMO_MPI.bat</code>: pruebas del H3 con 1, 4, 9 y 16 procesos, Cannon contra SUMMA y la carrera de la captura 9) queda como complemento o plan B.</p>
+<p><b>Si algo falla:</b> cierra la ventana y muestra la captura correspondiente de este informe.</p>
+<ul>
+  <li>MPI dice "no disponible" en el visual: esa PC no tiene MS-MPI. Usa la laptop.</li>
+  <li>Se queda colgado: Ctrl + C. Probablemente un proceso falló antes de una función colectiva; corre <code>mpiexec -n 1 ...</code> para ver el mensaje.</li>
+  <li>Todo muy lento con 16 procesos: es lo de la sección 6. Agrega <code>-env MSMPI_PROGRESS_SPIN_LIMIT 1</code>.</li>
+</ul>
+<p>Comandos sueltos por si quieres mostrar algo distinto (desde <code>matmul-paralelo</code>, en una terminal nueva):</p>
+<pre>mpiexec -n 9 build\demo_sismo_mpi.exe 10 4          <span class="c">REM el edificio con 9 procesos</span>
+set REPARTO=filas &amp; mpiexec -n 4 build\demo_sismo_mpi.exe 10 4   <span class="c">REM reparto por filas: desbalance 1.09</span>
+mpiexec -n 8 build\demo_sismo_mpi.exe 100 400       <span class="c">REM el edificio grande (40 100 nodos)</span>
+mpiexec -n 6 build\test_mpi.exe                     <span class="c">REM SUMMA con malla 2x3; Cannon se rechaza</span>
+mpiexec -n 1 build\carrera_mpi.exe 100 400 20       <span class="c">REM la carrera: siempre primero con -n 1 ...</span>
+mpiexec -n 12 build\carrera_mpi.exe 100 400 20      <span class="c">REM ... y luego con los procesos que quieras</span></pre>
+
+<!-- ============ PREGUNTAS ============ -->
+<h2><span class="n">9</span>Preguntas probables</h2>
+<table>
+  <tr><th style="width:38%">Pregunta</th><th>Respuesta corta</th></tr>
+  <tr><td>¿Por qué una malla 2D en el denso y franjas en el edificio?</td><td>En el denso cada proceso necesita una fila de bloques de A y una columna de B: en 2D son 2n²/√p datos en vez de n². En el edificio K es dispersa y cada nodo depende solo de sus vecinos: con franjas basta mandar 2 filas de nodos por paso.</td></tr>
+  <tr><td>¿Qué es un nodo fantasma?</td><td>Una copia local, de solo lectura, de un nodo de otro proceso que necesito para mi K·U o para la deriva. Se actualiza en cada paso con el intercambio de fronteras.</td></tr>
+  <tr><td>¿Por qué <code>MPI_Sendrecv_replace</code> en Cannon?</td><td>Manda y recibe en una llamada y sobre el mismo búfer: todos rotan a la vez sin interbloqueo (si todos hicieran <code>MPI_Send</code> primero podrían quedarse esperando) y sin memoria extra.</td></tr>
+  <tr><td>¿Por qué <code>MPI_Isend</code> / <code>MPI_Irecv</code> en el simulador?</td><td>Cada proceso tiene 2 vecinos: con llamadas no bloqueantes se lanzan todos los mensajes a la vez y se espera al final con <code>MPI_Waitall</code>, sin depender del orden.</td></tr>
+  <tr><td>¿Por qué SUMMA si ya está Cannon?</td><td>Funciona con cualquier p, no necesita sesgo inicial ni malla periódica, y es el esquema de bibliotecas como ScaLAPACK.</td></tr>
+  <tr><td>¿El resultado de MPI es aproximado?</td><td>En el simulador no: es idéntico bit a bit. En Cannon y SUMMA, dentro de ε = 1e-9 (error real ~1e-15), porque el orden de las sumas cambia.</td></tr>
+  <tr><td>¿Por qué no llega a 9× con 9 procesos?</td><td>La laptop tiene 2 núcleos rápidos y 10 eficientes, y la RAM es compartida. Además, el tiempo incluye repartir los datos desde el proceso 0 y la comunicación (28–51 %).</td></tr>
+  <tr><td>¿Por qué MS-MPI y no OpenMPI?</td><td>Es el MPI nativo de Windows y funciona con el gcc que ya usábamos, sin instalar Linux. El código es el mismo y en Linux compila con <code>mpicc</code>.</td></tr>
+  <tr><td>¿Por qué 16 procesos es tan lento?</td><td>Hay más procesos que hilos (14) y MS-MPI espera con espera activa. Con <code>MSMPI_PROGRESS_SPIN_LIMIT=1</code> pasa de 0.64× a 2.88× (sección 6).</td></tr>
+</table>
+
+<!-- ============ PENDIENTES ============ -->
+<h2><span class="n">10</span>Pendientes y supuestos</h2>
+<ul>
+  <li><b>Las mediciones son de la laptop</b> (DESKTOP-62M3KIP), no de la máquina de S7 (DESKTOP-R3PLOD9, i5-11400F). Para el informe final hay que repetir <code>make test-mpi</code> y <code>make bench-mpi</code> en la máquina oficial. Los números de S7 y estos no se deben mezclar en una misma tabla.</li>
+  <li><b>MS-MPI en vez de WSL2:</b> es una decisión tomada al instalar en esta laptop. Conviene anotarla en <code>docs/actas.md</code>, junto con lo de la espera pasiva para p mayor que los núcleos.</li>
+  <li><b>La comparación MPI contra OpenMP</b> usa mediciones de días distintos (OpenMP del 15/10). Hay que confirmarla midiendo las dos el mismo día.</li>
+  <li><b>Interpretación de lo que pide S8:</b> el cronograma dice "informe de avance: modelo, verificación y primeros tiempos" y "diseño del reparto para MPI". Los cubrimos con este informe y con <code>docs/DISENO_REPARTO_MPI.md</code>. Si el docente pedía un formato específico (por ejemplo IEEE), hay que adaptarlo.</li>
+  <li>Faltan el nombre del docente y de los integrantes en la portada del PPT y de este informe.</li>
+</ul>
+
+<!-- ============ ANEXO ============ -->
+<h2><span class="n">A</span>Anexo: archivos y cómo reproducir</h2>
+<table>
+  <tr><th style="width:45%">Archivo</th><th>Qué es</th></tr>
+  <tr><td><code>include/par_mpi.h</code></td><td>API MPI y sus convenciones (todo colectivo; datos por el proceso 0)</td></tr>
+  <tr><td><code>src/mpi/cannon.c</code>, <code>summa.c</code></td><td>Los dos algoritmos densos</td></tr>
+  <tr><td><code>src/mpi/sim_mpi.c</code></td><td>Reparto, fantasmas, intercambio de fronteras, K·U y simulador distribuidos</td></tr>
+  <tr><td><code>src/mpi/mpi_common.c</code></td><td>Mallas, reparto de bloques, contadores de mensajes y bytes</td></tr>
+  <tr><td><code>tests/test_mpi.c</code></td><td>La suite del H3 (8 grupos)</td></tr>
+  <tr><td><code>bench/bench_mpi.c</code>, <code>bench_sim_mpi.c</code></td><td>Mediciones → <code>results/mpi_*.csv</code></td></tr>
+  <tr><td><code>scripts/graficos_s11.py</code></td><td>Figuras 10, 11 y 12 y tablas</td></tr>
+  <tr><td><code>docs/DISENO_REPARTO_MPI.md</code></td><td>Diseño del reparto (S8)</td></tr>
+  <tr><td><code>docs/GUIA_S9_S11.md</code></td><td>Guía completa: instalar, compilar, probar, medir, interpretar</td></tr>
+  <tr><td><code>apps/carrera_mpi.c</code></td><td>La carrera: el mismo edificio con 1 a p procesos, tiempo, speedup y resultado idéntico</td></tr>
+  <tr><td><code>DEMO_MPI.bat</code></td><td>La demo en vivo</td></tr>
+</table>
+<pre>mingw32-make mpi          <span class="c"># compilar (Git Bash; en Linux: make)</span>
+mingw32-make test-mpi     <span class="c"># pruebas con 1, 2, 4, 6, 9 y 16 procesos</span>
+mingw32-make bench-mpi    <span class="c"># mediciones (unos 15 minutos)</span>
+mingw32-make figuras-s11  <span class="c"># figuras y tablas</span>
+mingw32-make demo-mpi     <span class="c"># la demo con 4 procesos</span>
+mingw32-make carrera-mpi  <span class="c"># la carrera con 1, 2, 4 y 9 procesos</span></pre>
+<p class="small">Antes de todo esto, <code>make test</code> (70 pruebas) y <code>make test-omp</code> (51) siguen pasando: no se cambió nada de las fases anteriores, salvo que <code>apps/demo_sismo.c</code> ahora también compila en modo MPI con <code>-DUSE_MPI</code>.</p>
+
+</body>
+</html>

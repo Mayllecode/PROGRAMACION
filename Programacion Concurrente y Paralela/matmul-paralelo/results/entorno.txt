@@ -1,0 +1,26 @@
+=== Entorno del proyecto — 2026-10-01 16:05 — DESKTOP-R3PLOD9
+
+--- Sistema
+  MINGW64_NT-10.0-19045 3.4.10-87d57229.x86_64 x86_64
+  CPU: 11th Gen Intel(R) Core(TM) i5-11400F @ 2.60GHz
+  Nucleos fisicos: 6   hilos: 12
+  Cache L2: 3072 KB   L3: 12288 KB
+  RAM: 15.9 GB
+
+--- Compilador C y OpenMP (Fase 2)
+  [OK]    gcc.exe (MinGW-W64 x86_64-ucrt-posix-seh, built by Brecht Sanders, r2) 16.2.0
+  [OK]    OpenMP compila; prueba con OMP_NUM_THREADS=4 -> 4 hilos (máximo disponible: 4)
+
+--- Python + matplotlib (gráficos: make figuras)
+  [OK]    Python 3.12.2
+  [OK]    matplotlib 3.10.8
+
+--- Go (variante worker pool, Fase 2)
+  [OK]    go version go1.27.1 windows/amd64
+
+--- MPI (Fase 3)
+  [FALTA] MPI (en Windows: usar WSL2 con Ubuntu, ver docs/INSTALACION.md)
+
+--- CUDA (Fase 4)
+  [FALTA] nvcc (si no hay GPU local: usar Google Colab con entorno GPU)
+  [OK]    GPU 0: NVIDIA GeForce GTX 1660 SUPER (UUID: GPU-788da260-6c98-e3c9-78df-7e33b16a0350)

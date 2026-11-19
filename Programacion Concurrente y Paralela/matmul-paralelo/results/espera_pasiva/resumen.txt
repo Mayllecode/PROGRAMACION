@@ -1,0 +1,26 @@
+
+Producto denso con MPI: p = 16 procesos, mediana de 5
+  algoritmo     n  malla  mediana_s    comm_s    calc_s reparto_s  mensajes         MB
+  cannon     512    4x4     0.0114    0.0056    0.0047    0.0041       120       15.7
+  summa      512    4x4     0.0123    0.0045    0.0040    0.0039        96       12.6
+  cannon    1024    4x4     0.0753    0.0285    0.0384    0.0199       120       62.9
+  summa     1024    4x4     0.0751    0.0285    0.0357    0.0183        96       50.3
+  cannon    2048    4x4     0.8452    0.2602    0.7173    0.1236       120      251.7
+  summa     2048    4x4     1.0058    0.3044    0.8729    0.1969        96      201.3
+
+Simulador con MPI: p = 16 procesos, 400 pasos, 8 escenarios, mediana de 5
+
+Edificio 20 x 50 (n = 1020 nodos, nnz = 4958)
+  version           p  mediana_s    comm_s    calc_s reparto_s   mensajes       MB  fantasmas
+  sim_mpi_filas    16     0.0102    0.0075    0.0023    0.0009      12030     39.3        102
+  sim_mpi_nnz      16     0.0103    0.0076    0.0025    0.0015      12030     39.3        102
+
+Edificio 50 x 200 (n = 10050 nodos, nnz = 49748)
+  version           p  mediana_s    comm_s    calc_s reparto_s   mensajes       MB  fantasmas
+  sim_mpi_filas    16     0.0485    0.0254    0.0208    0.0038      12030    154.8        402
+  sim_mpi_nnz      16     0.0543    0.0298    0.0228    0.0077      12030    154.8        402
+
+Edificio 100 x 400 (n = 40100 nodos, nnz = 199498)
+  version           p  mediana_s    comm_s    calc_s reparto_s   mensajes       MB  fantasmas
+  sim_mpi_filas    16     0.1991    0.0953    0.1193    0.0089      12030    308.7        802
+  sim_mpi_nnz      16     0.2178    0.1160    0.1209    0.0099      12030    308.7        802

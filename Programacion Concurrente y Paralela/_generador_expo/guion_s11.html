@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Guion de la exposición S8 a S11</title>
+<style>
+  @page { size: A4; margin: 15mm 16mm 16mm 16mm; }
+  :root { --ink: #1B2433; --navy: #13233F; --orange: #E4572E; --muted: #6B7686; --line: #D5DCE6; --tint: #EEF2F7; --amarillo: #FFF6D6; --amarilloB: #F2B134; --verde: #E7F4EA; --verdeB: #3A9D5D; }
+  * { box-sizing: border-box; }
+  body { font-family: "Segoe UI", Calibri, Arial, sans-serif; color: var(--ink); font-size: 10.5pt; line-height: 1.45; margin: 0; background: #fff; }
+  h1 { font-size: 21pt; color: var(--navy); margin: 0 0 1mm; }
+  .sub { color: var(--muted); font-size: 10pt; margin-bottom: 4mm; }
+  h2 { font-size: 14.5pt; color: var(--navy); margin: 7mm 0 2.5mm; break-after: avoid; }
+  h2 .n { display: inline-block; min-width: 9mm; height: 9mm; line-height: 9mm; text-align: center; border-radius: 4.5mm; background: var(--orange); color: #fff; font-size: 11pt; margin-right: 2.5mm; padding: 0 2mm; }
+  h3 { font-size: 11.5pt; color: var(--navy); margin: 4mm 0 1.5mm; break-after: avoid; }
+  p { margin: 0 0 2mm; }
+  ul, ol { margin: 0 0 2.5mm; padding-left: 6mm; }
+  li { margin-bottom: 0.8mm; }
+  code { font-family: Consolas, monospace; font-size: 9.2pt; background: var(--tint); padding: 0 1mm; border-radius: 1mm; }
+  .mostrar { background: var(--tint); border-radius: 2mm; padding: 2mm 3.5mm; margin: 2mm 0; break-inside: avoid; break-after: avoid; }
+  h3 + .mostrar, h2 + .mostrar { break-before: avoid; }
+  .mostrar b { color: var(--navy); }
+  .dices { background: var(--amarillo); border-left: 0; border-radius: 2mm; padding: 3mm 4mm; margin: 2.5mm 0 3mm; break-inside: avoid; }
+  .dices .t { font-weight: 700; color: #9A6A00; font-size: 9pt; letter-spacing: 1.5px; margin-bottom: 1mm; }
+  .dices p { margin-bottom: 2mm; }
+  .dices p:last-child { margin-bottom: 0; }
+  .apoyo { background: var(--verde); border-radius: 2mm; padding: 2.5mm 4mm; margin: 2mm 0 3mm; break-inside: avoid; font-size: 9.8pt; }
+  .apoyo .t { font-weight: 700; color: #2B7A46; font-size: 9pt; letter-spacing: 1.5px; margin-bottom: 1mm; }
+  .ojo { background: #FDE8E2; border-radius: 2mm; padding: 2.5mm 4mm; margin: 2mm 0 3mm; break-inside: avoid; font-size: 9.8pt; }
+  .ojo .t { font-weight: 700; color: #B33A1A; font-size: 9pt; letter-spacing: 1.5px; margin-bottom: 1mm; }
+  figure { margin: 2mm 0 2.5mm; break-inside: avoid; text-align: center; }
+  figure img { max-width: 100%; border: 1px solid var(--line); border-radius: 1.5mm; }
+  figure img.lam { width: 128mm; }
+  figure img.con { max-height: 95mm; max-width: 100%; }
+  figcaption { font-size: 8.8pt; color: var(--muted); margin-top: 1mm; }
+  table { border-collapse: collapse; width: 100%; margin: 2mm 0 3mm; font-size: 9.6pt; break-inside: avoid; }
+  th { background: var(--navy); color: #fff; text-align: left; padding: 1.5mm 2mm; font-weight: 600; }
+  td { padding: 1.3mm 2mm; border-bottom: 1px solid var(--line); vertical-align: top; }
+  .indice { columns: 2; font-size: 10pt; margin: 2mm 0 4mm; }
+  .indice div { margin-bottom: 0.8mm; }
+  .indice b { color: var(--orange); display: inline-block; width: 7mm; }
+  .tiempo { float: right; font-size: 9pt; color: var(--muted); font-weight: 400; margin-top: 1.5mm; }
+  .salto { break-before: page; }
+</style>
+</head>
+<body>
+
+<h1>Guion de la exposición · Avance S8 a S11 (MPI)</h1>
+<div class="sub">Lo que vas a mostrar y lo que vas a decir, parte por parte, con las láminas y las capturas de la demo · Matrices paralelas, UNMSM · Fran Diego Maylle Poma · 5 de noviembre de 2026</div>
+
+<p>Cada parte tiene tres cosas: <b>qué mostrar</b> (la lámina o la tecla que pulsas), la imagen de cómo se ve, y <b>lo que dices</b> en el recuadro amarillo, para leerlo o decirlo con tus palabras. Los recuadros verdes son datos de apoyo por si te preguntan. Los rojos son cosas a tener en cuenta en vivo.</p>
+<div class="indice">
+  <div><b>1</b>Portada</div>
+  <div><b>2</b>Dónde estamos</div>
+  <div><b>3</b>S8: el diseño del reparto</div>
+  <div><b>4</b>S9: Cannon</div>
+  <div><b>5</b>S10: SUMMA</div>
+  <div><b>6</b>S10: la tabla comparativa</div>
+  <div><b>7</b>S11: la simulación distribuida</div>
+  <div><b>8</b>H3: la verificación</div>
+  <div><b>9</b>Resultados</div>
+  <div><b>10</b>Lo que dicen los números</div>
+  <div><b>11</b>Demo en vivo con el programa visual</div>
+  <div><b>12</b>La medición en serio (tecla B)</div>
+  <div><b>13</b>Cierre y preguntas</div>
+  <div><b>—</b>Preguntas probables y plan B</div>
+</div>
+
+<div class="mostrar"><b>Antes de empezar (5 minutos antes):</b>
+<ol>
+  <li><b>Laptop enchufada, o si no, en modo de energía "Máximo rendimiento"</b> (clic en el ícono de batería). Con batería en modo "Equilibrado" todo corre unas 2 veces más lento y los números no coinciden con las láminas (ver la parte 12).</li>
+  <li>Cierra el navegador, WhatsApp y todo lo pesado.</li>
+  <li>Abre <code>Exposicion\Avance_S8_S11_MPI.pptx</code> en la Vista del moderador (Alt + F5): en las notas tienes un resumen de este guion.</li>
+  <li>Abre <code>matmul-paralelo\VISUAL.bat</code> con doble clic, <b>maximiza la ventana</b> y déjala en la bienvenida, sin pulsar nada.</li>
+</ol>
+Total: unos <b>18 minutos</b>. Si te dan solo 10: salta las partes 5 y 10, y en la demo haz solo los pasos 2, 4 y la medición (B).</div>
+
+<!-- =============== 1 =============== -->
+<h2><span class="n">1</span>Portada <span class="tiempo">0.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 1. Señala con el mouse la malla de 9 cuadros (P0 a P8).</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s01.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Buenos días. Hoy presentamos el avance de las semanas 8 a 11 de nuestro proyecto, la simulación paralela de la respuesta sísmica de un edificio.</p>
+<p>En la exposición pasada mostramos OpenMP: varios hilos dentro de un mismo computador, que comparten la misma memoria. Hoy damos el siguiente paso: <b>MPI, memoria distribuida</b>. Aquí cada proceso tiene su propia memoria, como si cada uno fuera un computador distinto. Estos nueve cuadros son nueve procesos y cada uno solo ve lo suyo: si necesita un dato de otro, se lo tienen que mandar con un mensaje. Así es como funcionan los clústeres y las supercomputadoras."</p>
+</div>
+
+<!-- =============== 2 =============== -->
+<h2><span class="n">2</span>Dónde estamos <span class="tiempo">1 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 2. Señala la línea de tiempo (H1 y H2 en verde, H3 en naranja con "HOY") y después las 4 cifras de izquierda a derecha.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s02.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Nuestro cronograma tiene cinco hitos. El H1 fue el simulador secuencial validado y el H2 la versión con OpenMP y su demo. Hoy cerramos la fase de memoria distribuida, semanas 9 a 11, con el <b>Hito H3</b>, que dice: la simulación con MPI tiene que dar los mismos desplazamientos que la secuencial con 1, 4, 9 y 16 procesos. Por ahora todo corre en una sola laptop; en las semanas 12 y 13, además del híbrido con la tarjeta gráfica, lo vamos a llevar a un <b>clúster</b> de varias computadoras. Por eso esa etapa dice "MPI + CUDA y clúster".</p>
+<p>Les adelanto los resultados. Primero, <b>34 pruebas OK con 16 procesos</b>. Segundo, <b>cero bits distintos</b>: el resultado con MPI es exactamente igual al secuencial, no parecido. Tercero, con 9 procesos el simulador va <b>4 veces más rápido</b>. Y cuarto, implementamos <b>dos algoritmos</b> para el producto de matrices denso, Cannon y SUMMA, y medimos cuántos mensajes y cuántos bytes usa cada uno."</p>
+</div>
+
+<!-- =============== 3 =============== -->
+<h2><span class="n">3</span>Semana 8: el diseño del reparto <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 3. Primero el panel izquierdo (la malla de bloques) y después el derecho (el edificio con franjas de colores). Señala los dos recuadros rojos punteados.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s03.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"La tarea de la semana 8 era diseñar cómo repartir el trabajo. En memoria distribuida eso es lo primero que hay que decidir: qué datos guarda cada proceso, porque lo que no tiene, alguien se lo tiene que mandar.</p>
+<p>Para las matrices densas usamos una <b>malla de procesos en dos dimensiones</b>. El proceso de la fila i y la columna j guarda el bloque (i, j) de las matrices A, B y C. Para calcular su bloque de C solo necesita una fila de bloques de A y una columna de bloques de B. Si repartiéramos por filas, cada proceso necesitaría la matriz B entera; así, con 16 procesos, cada uno recibe cuatro veces menos datos.</p>
+<p>Para el edificio es distinto. La matriz K es dispersa: cada nodo solo está conectado con sus vecinos. Entonces a cada proceso le damos una <b>franja de pisos</b>; en el dibujo, cada color es un proceso. Para calcular su parte, el proceso 1, el verde, necesita solo dos cosas de los demás: el piso de abajo y el de arriba, los de los recuadros rojos. Esos los llamamos <b>nodos fantasma</b>: copias de nodos de otro proceso que se actualizan en cada paso de tiempo."</p>
+</div>
+<div class="apoyo"><div class="t">SI TE PREGUNTAN</div>
+<b>¿Por qué no repartir el edificio en 2D?</b> Con hasta 16 procesos y 100 pisos, cada franja tiene al menos 6 pisos, así que las franjas alcanzan. En 2D cada proceso tendría hasta 4 vecinos y el código sería más complejo. Está anotado como mejora en <code>docs/DISENO_REPARTO_MPI.md</code>.</div>
+
+<!-- =============== 4 =============== -->
+<h2 class="salto"><span class="n">4</span>Semana 9: Cannon <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 4. Señala una casilla de la malla, la (1,2), después los pasos 1, 2 y 3, y al final el código.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s04.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"El primer algoritmo es el de <b>Cannon</b>. Usa una malla cuadrada de procesos, por ejemplo de 3 por 3, en la que cada fila y cada columna se cierran en anillo.</p>
+<p>Lo primero es un <b>sesgo inicial</b>: la fila i de A se corre i lugares a la izquierda y la columna j de B, j lugares hacia arriba. Después de eso pasa algo bonito: miren esta casilla, la (1,2). Tiene el bloque A10 y el bloque B02, y el índice del medio, el cero, coincide. Eso pasa en todas las casillas, así que cada proceso ya puede multiplicar sus dos bloques.</p>
+<p>Luego se repite q veces: multiplicar, rotar A una posición a la izquierda y B una hacia arriba. En el código, cada rotación es un <b>MPI_Sendrecv_replace</b>: manda su bloque al vecino y recibe el del otro vecino en la misma llamada y en el mismo espacio de memoria. Así todos rotan a la vez, sin quedarse bloqueados esperándose unos a otros."</p>
+</div>
+<div class="apoyo"><div class="t">SI TE PREGUNTAN</div>
+<b>¿Funciona con cualquier número de procesos?</b> No: necesita un número cuadrado, 1, 4, 9 o 16. Con 2 o 6 procesos lo rechaza, y lo probamos. Por eso hicimos SUMMA.<br>
+<b>¿Da exactamente lo mismo que el secuencial?</b> Dentro de una tolerancia de 1e-9; el error real es de 1e-15. No es idéntico porque cada bloque empieza a sumar por un índice distinto y en punto flotante el orden de la suma cambia los últimos decimales.</div>
+
+<!-- =============== 5 =============== -->
+<h2><span class="n">5</span>Semana 10: SUMMA <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 5. La malla (azul, naranja y morado) y después la tabla de la derecha, fila por fila.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s05.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"El segundo algoritmo es <b>SUMMA</b>. Calcula lo mismo, pero con otra idea: los bloques no se mueven de dueño. En cada paso, alguien <b>difunde</b> un pedazo a los demás. En este paso, la columna 1, en azul, manda su pedazo de A a toda su fila, y la fila 1, en naranja, manda su pedazo de B a toda su columna. El de en medio, en morado, hace las dos cosas. Para eso usamos <b>MPI_Bcast</b>, que MPI hace en forma de árbol, no mandando uno por uno.</p>
+<p>La tabla resume las diferencias. La más importante es la primera fila: Cannon solo funciona con 1, 4, 9 o 16 procesos, y <b>SUMMA funciona con cualquier número</b>, por ejemplo 2, 6 u 8. Además no necesita sesgo inicial. Por eso SUMMA es el algoritmo que usan bibliotecas profesionales como ScaLAPACK."</p>
+</div>
+
+<!-- =============== 6 =============== -->
+<h2><span class="n">6</span>Semana 10: la tabla comparativa <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 6. Primero las columnas de S(p) con 9 procesos, luego las de mensajes con 16, y al final el recuadro de la fórmula.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s06.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"El entregable de la semana 10 es esta tabla: Cannon contra SUMMA, multiplicando matrices de 1024 por 1024.</p>
+<p>En velocidad están prácticamente empatados: con 9 procesos, Cannon es <b>3,56 veces</b> más rápido que el secuencial y SUMMA <b>3,55</b>. Tiene sentido, porque con una malla cuadrada los dos hacen la misma cantidad de pasos con bloques del mismo tamaño.</p>
+<p>La diferencia está en la comunicación. Cannon recibe más datos: con 16 procesos son <b>120 mensajes contra 96</b>. Y no lo medimos a ciegas, coincide con la fórmula: los dos necesitan 2 por p por (q menos 1), que con 16 procesos da 96, y Cannon suma 24 más del sesgo inicial. Además, SUMMA corre con 2 y con 8 procesos, donde Cannon no puede, y con 8 llega a 3,57 veces."</p>
+</div>
+<div class="apoyo"><div class="t">SI TE PREGUNTAN</div>
+<b>¿Por qué no llega a 9 veces con 9 procesos?</b> Esta laptop tiene 2 núcleos rápidos y 10 eficientes, que son más lentos, y todos comparten la misma memoria RAM. Además, el tiempo incluye repartir las matrices desde el proceso 0 y juntar el resultado al final.<br>
+<b>¿Qué es el asterisco de 16?</b> Que con 16 procesos usamos "espera pasiva" (se explica en la parte 10).</div>
+
+<!-- =============== 7 =============== -->
+<h2 class="salto"><span class="n">7</span>Semana 11: la simulación distribuida <span class="tiempo">2 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 7. Recorre los 4 pasos de la izquierda y después la captura de la derecha (la tabla de procesos).</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s07.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Ahora el corazón del hito: <b>el simulador con el edificio repartido</b>. Cada proceso tiene su franja de pisos y, en cada paso de tiempo, hace cuatro cosas.</p>
+<p>Uno: <b>actualiza el desplazamiento de sus propios nodos</b>; para eso solo necesita datos que ya tiene. Dos: <b>intercambia las fronteras</b> con el vecino de abajo y el de arriba. Usamos MPI_Isend y MPI_Irecv, que no bloquean: lanzo los mensajes a los dos vecinos a la vez y espero todo junto al final. Tres: calcula los <b>picos y la deriva</b>; la deriva compara cada piso con el de abajo, que puede ser un fantasma. Y cuatro: calcula su parte del producto <b>K por U</b> con los fantasmas que acaba de recibir. Con un solo intercambio por paso nos alcanza para las dos cosas.</p>
+<p>Esta es la salida real de la demo con 4 procesos. El proceso 1 tiene los nodos del 13 al 24, que son parte del piso 3, el 4 y parte del 5. Necesita 10 fantasmas, 5 de abajo y 5 de arriba, y tiene 2 vecinos. Y fíjense en la columna nnz: cada proceso tiene exactamente 55 no nulos. Eso es el <b>balanceo de carga</b>: no repartimos por cantidad de nodos sino por cantidad de no nulos, que es lo que realmente cuesta calcular. Si repartiéramos por nodos, un proceso tendría 50 y otro 60."</p>
+</div>
+
+<!-- =============== 8 =============== -->
+<h2><span class="n">8</span>Hito H3: la verificación <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 8. Las 6 tarjetas (las verdes son las del criterio), después la captura de la derecha y al final el recuadro gris.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s08.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"El criterio del H3 dice que la simulación con MPI debe dar los mismos desplazamientos que la secuencial con 1, 4, 9 y 16 procesos. Esas son las tarjetas verdes: todas las pruebas pasan, cero fallas. También probamos con 2 y con 6 procesos, que reparten el trabajo de forma dispareja y obligan a SUMMA a usar una malla rectangular.</p>
+<p>Y lo cumplimos con el criterio más estricto posible: <b>idéntico bit a bit</b>. A la derecha corrimos la demo secuencial y la de 16 procesos y comparamos los archivos de resultados con el comando fc: <b>no se han encontrado diferencias</b>. Ni un solo byte distinto.</p>
+<p>¿Por qué podemos exigir que sea idéntico? Porque cada fila del producto la calcula un solo proceso y suma en el mismo orden que el secuencial. Si cambiara un solo bit, sería un error nuestro, por ejemplo un fantasma desactualizado, y la prueba lo detectaría."</p>
+</div>
+
+<!-- =============== 9 =============== -->
+<h2 class="salto"><span class="n">9</span>Resultados <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 9. Las barras de p = 8 y p = 9, y después las tres tarjetas de la derecha de arriba abajo.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s09.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Este es el speedup del simulador con tres tamaños de edificio, desde mil nodos hasta cuarenta mil. Con 8 y 9 procesos llegamos a entre <b>3,5 y 4 veces más rápido</b>; el máximo es 3,96 con 9 procesos en el edificio de 50 por 200.</p>
+<p>Un dato que nos sorprendió: en esta misma laptop, OpenMP con 8 hilos daba 2,1 veces, y <b>MPI con 8 procesos da 3,6</b>. La razón es que en OpenMP todos los hilos se esperan en una barrera dos veces por cada paso de tiempo; en MPI cada proceso solo espera a sus dos vecinos.</p>
+<p>También se ve que la comunicación pesa menos cuanto más grande es el edificio: en el grande es el 28 % del tiempo y en el chico el 51 %. Siempre se mandan solo dos filas de nodos, pero el cálculo crece con el tamaño del edificio. Y la última tarjeta: con 16 procesos, sin cuidado, va más lento que con uno solo. Eso lo explico en la siguiente."</p>
+</div>
+<div class="apoyo"><div class="t">SI TE PREGUNTAN</div>
+<b>¿Las mediciones de OpenMP y MPI son del mismo día?</b> No: las de OpenMP son del 15 de octubre. Lo vamos a confirmar midiendo las dos el mismo día en la máquina oficial.<br>
+<b>¿Qué es T(1)?</b> Lo más rápido medido con un solo proceso. Usamos el más rápido para no inflar el speedup.</div>
+
+<!-- =============== 10 =============== -->
+<h2><span class="n">10</span>Lo que dicen los números <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 10. Las tres barras de la izquierda (roja, verde y azul) y después las 4 tarjetas de la derecha.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s10.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Esto fue lo más interesante de medir. La laptop tiene 14 hilos y le pedimos 16 procesos. Con la configuración por defecto, el simulador fue <b>0,64 veces</b>: más lento que con un solo proceso.</p>
+<p>¿Por qué? MS-MPI, para responder rápido, espera los mensajes con <b>espera activa</b>: un bucle que pregunta "¿ya llegó?, ¿ya llegó?" sin soltar el núcleo. Si hay más procesos que núcleos, el que está esperando le quita la CPU justo al vecino que le tiene que mandar el dato. Y como el simulador se sincroniza 400 veces, el efecto se acumula.</p>
+<p>La solución es una opción de mpiexec que activa la <b>espera pasiva</b>: el que espera suelta el núcleo. Con el mismo código, pasamos de 0,64 a <b>2,88 veces</b>. Pero no la dejamos siempre, porque con 8 procesos es un poco más lenta: solo conviene cuando hay más procesos que núcleos.</p>
+<p>La conclusión es que <b>la programación paralela sí acelera, pero hay que conocer la máquina</b>: cuántos núcleos tiene, que no todos son iguales y que conviene en problemas grandes."</p>
+</div>
+
+<!-- =============== 11 =============== -->
+<h2 class="salto"><span class="n">11</span>Demo en vivo con el programa visual <span class="tiempo">4 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> al terminar la lámina 10, cambia a la ventana de <code>VISUAL.bat</code> (Alt + Tab), que ya está abierta en la bienvenida y maximizada. La demo no tiene lámina: se hace en vivo.</div>
+<div class="dices"><div class="t">LO QUE DICES (antes de cambiar de ventana)</div>
+<p>"Ahora lo vamos a ver funcionando en nuestro programa visual, el mismo de la exposición pasada. La novedad es que ahora tiene un <b>cuarto motor: MPI</b>.</p>
+<p>Una aclaración antes de empezar: todo esto corre en <b>una sola laptop</b>. Los procesos MPI están en la misma máquina, cada uno con su propia memoria, pero todavía no en un clúster de varias computadoras. El código es el mismo que funcionaría en un clúster; <b>correrlo en varias máquinas lo vamos a implementar en las semanas 12 y 13</b>."</p>
+</div>
+
+<h3>Paso 1 · La bienvenida: 4 motores</h3>
+<div class="mostrar"><b>Qué hacer:</b> la ventana muestra la bienvenida. Léela por encima y no pulses nada todavía.</div>
+<figure><img class="con" src="../Exposicion/capturas_s11/v1_bienvenida.png"><figcaption>La bienvenida del visual (VISUAL.bat).</figcaption></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Son cuatro motores que calculan exactamente lo mismo a la vez: el secuencial, OpenMP y Go, que ya conocen, y ahora <b>MPI</b>: varios <b>procesos</b>, cada uno con su propia memoria y una franja de pisos del edificio. El programa lanza los procesos MPI por detrás con mpiexec y les pide el resultado en cada paso para dibujarlo."</p>
+</div>
+
+<h3>Paso 2 · El edificio chico: los 4 motores en la carrera</h3>
+<div class="mostrar"><b>Qué hacer:</b> pulsa cualquier tecla (se cierra la bienvenida), luego <b>2</b> (el sismo de 1 Hz) y <b>Espacio</b> (empieza el sismo). Señala abajo LA CARRERA, la fila rosada de MPI y la columna "¿MISMO RESULTADO?".</div>
+<figure><img class="con" src="../Exposicion/capturas_s11/v2_chico.png"><figcaption>Edificio chico (50 nodos), sismo de 1 Hz, 4 hilos y 4 procesos.</figcaption></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Este es el edificio chico, 50 nodos, con el sismo de 1 hertz: arriba a la derecha dice <b>resonancia</b>, porque el edificio vibra justo a esa frecuencia.</p>
+<p>Abajo está la carrera con los cuatro motores. Fíjense en la última columna: OpenMP, Go y <b>MPI</b> dicen <b>idéntico</b>. Dan exactamente los mismos números que el secuencial.</p>
+<p>Pero con 50 nodos el paralelo pierde, y MPI también: repartir el trabajo y mandar mensajes cuesta más que la cuenta misma. Por eso hay que verlo con un edificio grande."</p>
+</div>
+
+<h3>Paso 3 · Las franjas de MPI</h3>
+<div class="mostrar"><b>Qué hacer:</b> pulsa <b>M</b> tres veces hasta que arriba diga "motor MPI (C)", y luego <b>V</b> (vista HILOS). Señala los colores del edificio y la caja REPARTO DEL TRABAJO.</div>
+<figure><img class="con" src="../Exposicion/capturas_s11/v3_chico_franjas.png"><figcaption>Vista de procesos: cada color es un proceso MPI con su franja de pisos.</figcaption></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Ahora el edificio está pintado por <b>proceso</b>: cada color es un proceso MPI, y cada uno tiene una <b>franja de pisos</b> en su propia memoria. A la derecha está el reparto: el proceso 0 tiene los primeros pisos, el 1 los siguientes, y así.</p>
+<p>Y aquí está la idea clave de MPI: cada proceso necesita el piso de arriba y el de abajo de su franja, que son de otro proceso. Esos son los <b>nodos fantasma</b>, y en cada paso de tiempo los vecinos se los mandan con un mensaje."</p>
+</div>
+
+<h3>Paso 4 · El edificio muy grande: MPI gana</h3>
+<div class="mostrar"><b>Qué hacer:</b> pulsa <b>V</b> (vuelve a la vista DAÑO) y <b>E</b> tres veces hasta "Edificio muy grande 100×400 = 40 100 nodos". Espera unos 5 segundos a que se estabilicen las barras de la carrera.</div>
+<figure><img class="con" src="../Exposicion/capturas_s11/v4_muy_grande.png"><figcaption>Edificio muy grande (40 100 nodos) con 4 hilos y 4 procesos.</figcaption></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Ahora el edificio de <b>40 mil nodos</b>. La carrera se da vuelta: con 4 procesos, <b>MPI es casi 2 veces más rápido</b> que el secuencial, y es el más rápido de los cuatro. Y sigue diciendo <b>idéntico</b>.</p>
+<p>A la derecha se ve el reparto: 4 procesos de unos 25 pisos cada uno. Los de los extremos tienen 401 fantasmas, una fila de nodos, y los del medio 802, porque tienen vecino arriba y abajo."</p>
+</div>
+
+<h3>Paso 5 · Más procesos</h3>
+<div class="mostrar"><b>Qué hacer:</b> pulsa <b>+</b> cuatro veces hasta "8 hilos/procesos". Cada vez el sismo vuelve a empezar, porque MPI relanza sus procesos. Luego pulsa <b>V</b> para ver las 8 franjas y espera unos 5 segundos.</div>
+<figure><img class="con" src="../Exposicion/capturas_s11/v5_muy_grande_8.png"><figcaption>8 procesos: 8 franjas de colores y MPI 2.4× más rápido.</figcaption></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Con 8 procesos, el edificio queda en <b>8 franjas</b>, una por color. MPI llega a unas <b>2,4 veces</b> más rápido, y sigue siendo el más rápido de los cuatro motores. Todos siguen diciendo idéntico."</p>
+</div>
+<div class="apoyo"><div class="t">SI TE PREGUNTAN</div>
+<b>¿Por qué en la carrera no llega a 3 veces?</b> Porque aquí los 4 motores corren a la vez y se reparten la laptop. La medición seria es la del paso siguiente, donde cada motor corre solo.</div>
+
+<!-- =============== 12 =============== -->
+<h2 class="salto"><span class="n">12</span>La medición en serio (tecla B) <span class="tiempo">1.5 min</span></h2>
+<div class="mostrar"><b>Qué hacer:</b> pulsa <b>B</b>. Sale una barra de progreso y tarda unos <b>30 segundos</b> (mientras tanto, explica lo de abajo). Cuando termine, señala las filas rosadas de MPI. Después vuelve al PPT, a la lámina 11.</div>
+<figure><img class="con" src="../Exposicion/capturas_s11/v6_medicion.png"><figcaption>Medición en serio del edificio muy grande: cada motor corre solo, 400 pasos, mediana de 3.</figcaption></figure>
+<div class="dices"><div class="t">LO QUE DICES (mientras mide)</div>
+<p>"Ahora cada motor corre solo, sin los demás, la misma simulación de 400 pasos, con 1, 2, 4 y 8 hilos o procesos, y nos quedamos con la mediana de tres corridas."</p>
+</div>
+<div class="dices"><div class="t">LO QUE DICES (con el resultado)</div>
+<p>"El secuencial tarda <b>0,59 segundos</b>. Miren las filas rosadas: MPI con 2 procesos ya es 1,7 veces más rápido, con 4 es 2 veces y <b>con 8 procesos, 3,3 veces más rápido: 0,18 segundos</b>. OpenMP llega a 2,6 y Go a 1,7.</p>
+<p>La rayita naranja de cada fila es el ideal, p veces más rápido con p procesos. No se llega al ideal por lo que vimos: la comunicación, la memoria compartida y que esta laptop tiene pocos núcleos rápidos. Pero la diferencia es clara: el mismo sismo, en un tercio del tiempo y con el mismo resultado."</p>
+</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s11.png"><figcaption>Lámina 11, para cerrar la demo.</figcaption></figure>
+<div class="ojo"><div class="t">OJO EN VIVO</div>
+Los números cambian un poco en cada corrida (±10–20 %). Si la laptop está con batería en modo <b>"Equilibrado"</b>, todo es unas 2 veces más lento: pon <b>"Máximo rendimiento"</b> antes de empezar. Si te pasa igual en vivo, dilo así: <i>"ahora está en ahorro de energía y por eso los tiempos son mayores, pero se ve la misma idea."</i><br>
+<b>Si MPI dice "no disponible"</b> en la carrera: esa PC no tiene MS-MPI instalado; usa la laptop.<br>
+<b>Extra (opcional):</b> para mostrar las pruebas del H3 con 1, 4, 9 y 16 procesos, está <code>DEMO_MPI.bat</code>, que corre por consola.</div>
+
+<!-- =============== 13 =============== -->
+<h2><span class="n">13</span>Cierre y preguntas <span class="tiempo">1 min</span></h2>
+<div class="mostrar"><b>Qué mostrar:</b> lámina 12.</div>
+<figure><img class="lam" src="../Exposicion/capturas_s11/laminas/s12.png"></figure>
+<div class="dices"><div class="t">LO QUE DICES</div>
+<p>"Con esto cerramos la fase de memoria distribuida y cumplimos el Hito H3. En las semanas 12 y 13 vienen dos cosas. Primero, llevar los procesos MPI a un <b>clúster</b> de varias computadoras, porque hoy todo corre en una sola laptop. Y segundo, el <b>híbrido</b>: cada proceso MPI va a calcular su parte del producto en la tarjeta gráfica con CUDA, y vamos a calcular el interior de cada franja mientras llegan las fronteras, para esconder el tiempo de comunicación.</p>
+<p>Un pendiente: estas mediciones las hicimos en mi laptop, así que las vamos a repetir en la máquina oficial del equipo para el informe final.</p>
+<p>Muchas gracias. ¿Alguna pregunta?"</p>
+</div>
+
+<!-- =============== PREGUNTAS =============== -->
+<h2 class="salto">Preguntas probables (respuestas para decir)</h2>
+<table>
+  <tr><th style="width:33%">Si te preguntan…</th><th>Respondes…</th></tr>
+  <tr><td>¿Qué diferencia hay entre MPI y OpenMP?</td><td>"OpenMP son hilos dentro de un computador que comparten la memoria. MPI son procesos con memoria separada que se comunican con mensajes; por eso MPI puede usar varios computadores, como en un clúster."</td></tr>
+  <tr><td>¿Qué es un nodo fantasma?</td><td>"Una copia de un nodo de otro proceso que necesito para calcular mi parte. En cada paso de tiempo se actualiza con el intercambio de fronteras."</td></tr>
+  <tr><td>¿Por qué usaron MS-MPI y no OpenMPI?</td><td>"Porque es el MPI nativo de Windows y funciona con el mismo compilador que ya usábamos. Los dos siguen el mismo estándar MPI: el código es el mismo, y en Linux se compila con mpicc."</td></tr>
+  <tr><td>¿Por qué Sendrecv_replace en Cannon?</td><td>"Porque manda y recibe en la misma llamada: todos rotan a la vez sin quedarse bloqueados y sin memoria extra."</td></tr>
+  <tr><td>¿Por qué SUMMA si ya tenían Cannon?</td><td>"Porque SUMMA funciona con cualquier número de procesos, no necesita el sesgo inicial y es el que usan bibliotecas como ScaLAPACK."</td></tr>
+  <tr><td>¿El resultado es aproximado?</td><td>"En el simulador no: es idéntico bit a bit, lo comprobamos comparando los archivos. En Cannon y SUMMA hay diferencias de 1e-15, por el orden de las sumas en punto flotante."</td></tr>
+  <tr><td>¿Por qué no es 9 veces más rápido con 9 procesos?</td><td>"Porque esta laptop solo tiene 2 núcleos rápidos y 10 eficientes, todos comparten la memoria RAM, y además hay comunicación: entre el 28 y el 51 % del tiempo, según el tamaño del edificio."</td></tr>
+  <tr><td>¿Entonces la programación paralela siempre es mejor?</td><td>"No siempre. Conviene cuando el problema es grande: en el edificio chico la comunicación se come la mitad del tiempo. Y no hay que pedir más procesos que núcleos, como vimos con 16."</td></tr>
+  <tr><td>¿Qué es el balanceo por nnz?</td><td>"Repartir para que cada proceso tenga la misma cantidad de no nulos de la matriz, que es lo que realmente cuesta calcular, en vez de la misma cantidad de nodos."</td></tr>
+</table>
+
+<h2>Plan B</h2>
+<ul>
+  <li><b>MPI dice "no disponible" en el visual:</b> esa PC no tiene MS-MPI. Usa la laptop; si no se puede, muestra las capturas de este guion o del informe (<code>Informe_avance_S8_S11.pdf</code>).</li>
+  <li><b>Se queda colgada:</b> Ctrl + C, cierra la ventana y sigue con las capturas.</li>
+  <li><b>Los números salen distintos a las láminas:</b> es normal que varíen un poco. Si son mucho mayores, revisa el modo de energía (parte 12).</li>
+  <li><b>Te quedas en blanco:</b> en la Vista del moderador (Alt + F5), las notas de cada lámina tienen el resumen de lo que dices.</li>
+</ul>
+<p style="color:var(--muted);font-size:9pt">Las capturas de la demo son cuadros reales del programa visual (<code>sismo_visual.exe</code>, el que abre <code>VISUAL.bat</code>), con los 4 motores calculando de verdad, MPI incluido. Se tomaron en la laptop DESKTOP-62M3KIP el 5 de noviembre de 2026. Los tiempos varían un poco en cada corrida.</p>
+
+</body>
+</html>

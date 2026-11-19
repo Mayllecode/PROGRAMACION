@@ -1,0 +1,603 @@
+﻿============================================================================================
+EXPOSICIÓN · SIMULACIÓN PARALELA DE LA RESPUESTA SÍSMICA
+============================================================================================
+Curso:      Programación Concurrente y Paralela · Proyecto 2 · UNMSM-FISI · 2026-2
+Docente:    [nombre del docente]
+Equipo:     Maylle Poma, Fran Diego · [integrantes]
+Archivos:   Simulacion_Sismica_Exposicion.pptx (13 láminas; esta guía resumida va en las notas del orador)
+            Simulacion_Sismica_Exposicion.pdf  (respaldo por si la PC del aula no abre el PPTX)
+
+Duración estimada: 17:00 min (con ritmo pausado). Si te dan menos tiempo, mira el punto 5.
+
+============================================================================================
+CÓMO USAR ESTA GUÍA
+============================================================================================
+1. No es un guion para memorizar. Para cada lámina tienes: QUÉ HAY en la lámina (cada
+recuadro, número, dibujo o línea de código, en el orden en que conviene señalarlo) y CÓMO
+EXPLICARLO. Tú lo dices con tus palabras.
+2. La "frase de ejemplo" es solo un apoyo por si te quedas en blanco. El "paso a la
+siguiente" te ayuda a enlazar las láminas sin silencios. "Si te preguntan" tiene las
+preguntas más probables del docente con su respuesta.
+3. Señala cada elemento mientras lo explicas. En las láminas de código, recórrelo con los
+círculos numerados (1, 2, 3...), nunca línea por línea: el código está simplificado para
+leerse en la exposición; el real está en el repositorio.
+4. En PowerPoint usa la Vista del moderador (Alt+F5): verás un resumen de esta guía en las
+notas, debajo de cada lámina.
+5. Si te dan solo 10 a 12 minutos: en la lámina 4 di solo los nombres de las fases y
+"estamos aquí"; en la 7 explica solo el código (salta el enchufe); en la 10 explica el
+diagrama y salta la tabla; en la 11 explica solo denso, "solo K·U" contra "todo el paso" y
+el recuadro amarillo. Ahorras unos 5 minutos.
+6. Los números de la lámina 11 son mediciones reales hechas en la PC DESKTOP-R3PLOD9
+(i5-11400F) el 14-10-2026, con el protocolo del proyecto (mediana de 5). Si el equipo vuelve
+a medir en la máquina oficial y salen distintos, se cambian en _generador_expo/build.js
+(objeto RES) y se regenera, o se editan a mano en PowerPoint. El dibujo del oscilador de la
+lámina 5 es ilustrativo; la figura real es results/figuras/01_validacion_1gdl.png.
+7. Antes de exponer, reemplaza en la portada "[nombre del docente]" e "[integrantes]".
+
+============================================================================================
+GUÍA LÁMINA POR LÁMINA
+============================================================================================
+
+--- LÁMINA 1 de 13 · PORTADA ---
+Tiempo: 0:30 min  ·  acumulado: 0:30
+
+OBJETIVO: Presentar el proyecto en una frase y dejar sembrada la idea de "K·U".
+
+RECORRIDO (en este orden):
+1) Encabezado "Universidad Nacional Mayor de San Marcos / FISI"
+     → Es contexto. No lo leas.
+2) Título "Simulación paralela de la RESPUESTA SÍSMICA"
+     → Dilo una sola vez, completo. Es el nombre del proyecto.
+3) Frase "Multiplicación de matrices en paralelo con OpenMP, Go, MPI y CUDA"
+     → Es el resumen técnico: el problema es sísmico, pero lo que paralelizamos es una
+     multiplicación de matrices. Nombra las cuatro tecnologías: son las cuatro etapas del
+     curso.
+4) Círculo "K·U" con "12 000 productos de matrices por cada sismo de 60 s"
+     → Úsalo como intriga: "en unos minutos van a saber qué es K, qué es U y por qué hay que
+     multiplicarlas 12 000 veces". Lo explicas en las láminas 2 y 3.
+5) Datos del curso, docente y equipo
+     → No los leas. Saluda al docente por su nombre y, si exponen varios, presenta al
+     equipo.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Buenos días, profesor; buenos días, compañeros. Nuestro proyecto simula cómo responde un
+   edificio ante un sismo, y el corazón de esa simulación es una multiplicación de matrices
+   que hacemos en paralelo."
+
+PASO A LA SIGUIENTE:
+   Primero, ¿por qué hace falta paralelizar algo así?
+
+--- LÁMINA 2 de 13 · ¿POR QUÉ SIMULAR UN SISMO EN PARALELO? ---
+Tiempo: 1:15 min  ·  acumulado: 1:45
+
+OBJETIVO: Que se entienda el problema real y por qué el cómputo es grande.
+
+RECORRIDO (en este orden):
+1) Recuadro gris con el problema
+     → Explícalo con un ejemplo: para saber si un edificio aguanta, no basta con un cálculo;
+     hay que simular cómo se mueve en cada instante del sismo, de principio a fin. Si el
+     edificio es grande y queremos probar varios sismos, el número de cuentas se dispara.
+2) Franja verde "Objetivo"
+     → Es nuestro criterio de éxito y lo vas a repetir varias veces: el MISMO resultado que
+     la versión secuencial, pero en menos tiempo. Si el resultado cambia, la versión
+     paralela está mal, por rápida que sea.
+3) Recuadro "12 000"
+     → Haz la cuenta en voz alta: un registro de 60 segundos con un paso de 5 milésimas de
+     segundo son 60 ÷ 0,005 = 12 000 pasos, y en cada paso hay un producto de matrices.
+     Aclara la segunda línea: cada producto atiende a todos los sismos a la vez (lo vas a
+     mostrar en la lámina 3).
+4) Frase en cursiva "Ese producto es el que repartimos..."
+     → Es el puente al resto de la exposición: todo el curso consiste en repartir ese
+     producto, primero entre núcleos, después entre procesos y al final en la GPU.
+5) Tres íconos: Perú sísmico, El modelo, El resultado
+     → Una frase por cada uno. Perú está en el Cinturón de Fuego del Pacífico: el tema nos
+     toca. El modelo: el edificio se representa con una matriz. El resultado: cuánto se
+     mueve y cuánto se deforma cada piso ante cada sismo.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Un sismo de un minuto, simulado con pasos de 5 milésimas de segundo, son 12 000
+   multiplicaciones de matrices. Si cada una es grande, el simulador tarda mucho; por eso la
+   repartimos entre varios núcleos."
+
+PASO A LA SIGUIENTE:
+   Veamos cómo un edificio se convierte en matrices.
+
+SI TE PREGUNTAN:
+   P: ¿Esto sirve para diseñar edificios de verdad?
+   R: No. Es un modelo académico: 2D, lineal y elástico. Sirve para estudiar el cómputo
+   paralelo. No reemplaza a la Norma E.030 ni a un ingeniero estructural, y lo dice el
+   alcance del proyecto.
+
+--- LÁMINA 3 de 13 · DEL SISMO A LAS MATRICES ---
+Tiempo: 1:30 min  ·  acumulado: 3:15
+
+OBJETIVO: Que entiendan qué son K y U, y por qué K·U es lo único que hay que paralelizar.
+
+RECORRIDO (en este orden):
+1) Círculo 1 "Estructura"
+     → El edificio es un pórtico: pisos y columnas. En cada cruce de piso y columna ponemos
+     un nodo con su masa. Las columnas y las losas son resortes que unen los nodos.
+2) Círculo 2 "Matriz K"
+     → K es la matriz de rigidez: dice qué tanto "empuja" cada nodo a sus vecinos. Es enorme
+     (n × n), pero casi toda llena de ceros, porque cada nodo solo toca a sus vecinos: como
+     máximo 5 números distintos de cero por fila. Por eso la guardamos en un formato
+     especial, CSR, que vemos en la lámina 6.
+3) Círculo 3 "Matriz U"
+     → U tiene los desplazamientos de todos los nodos. El truco: una columna por sismo. Así,
+     en vez de simular un sismo y luego otro, los simulamos todos a la vez.
+4) Círculo 4 "K · U" (resaltado en naranja)
+     → Es el paso que se repite 12 000 veces. Di claramente: "esto es lo que paralelizamos".
+5) Círculo 5 "Respuesta"
+     → Lo que obtenemos: el desplazamiento máximo de cada piso, la deriva (cuánto se deforma
+     un piso respecto al de abajo) y un mapa de qué zonas sufren más.
+6) Recuadro de ecuaciones
+     → No leas las fórmulas símbolo por símbolo. Izquierda: la ecuación de movimiento es la
+     segunda ley de Newton para el edificio (masa × aceleración + fuerza de los resortes =
+     fuerza del sismo). Derecha: con diferencias centrales calculamos el desplazamiento del
+     siguiente instante a partir de los dos anteriores. Remata con la última línea: M es
+     diagonal, así que dividir por M es barato; lo único caro es K·U.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "El edificio se vuelve una matriz K, los sismos se vuelven las columnas de U, y avanzar
+   en el tiempo es multiplicar K por U miles de veces."
+
+PASO A LA SIGUIENTE:
+   ¿Cómo organizamos el trabajo para llegar a eso en paralelo? Este es el plan.
+
+SI TE PREGUNTAN:
+   P: ¿Por qué diferencias centrales y no otro método?
+   R: Porque es explícito: el siguiente paso sale directamente de multiplicar K·U, sin
+   resolver un sistema de ecuaciones. Eso lo hace ideal para paralelizar. A cambio, el paso
+   de tiempo tiene que ser pequeño: Δt < 2/ω_max; el código calcula ese límite y usa la
+   mitad.
+   P: ¿Qué es la deriva?
+   R: El desplazamiento de un piso menos el del piso de abajo, dividido entre la altura del
+   piso. Es lo que más daña a las columnas.
+
+--- LÁMINA 4 de 13 · EL PLAN: CINCO FASES ---
+Tiempo: 1:15 min  ·  acumulado: 4:30
+
+OBJETIVO: Ubicar al público: qué ya está hecho, dónde estamos y qué falta.
+
+RECORRIDO (en este orden):
+1) Línea de tiempo con las cinco fases
+     → Recórrela de izquierda a derecha diciendo solo la idea de cada fase: un computador
+     con un hilo (S5–S6), un computador con varios hilos (S7–S8), varios computadores
+     (S9–S11), la GPU (S12–S13) y medir todo (S14–S16).
+2) Fase 1 con "✔ H1 · Cumplido"
+     → Ya está cerrada: el simulador secuencial validado. Es la base de todo lo demás.
+3) Etiqueta naranja "ESTAMOS AQUÍ" sobre S7–S8
+     → Hoy presentamos la semana 7: OpenMP y Go. El hito H2 de la semana 8 es mostrarlo
+     funcionando con una demo.
+4) Etiquetas de hitos H1 a H5
+     → Explica que cada hito tiene un criterio que se comprueba con pruebas, no con "ya
+     corre".
+5) Franja inferior "Alcance graduable"
+     → Es la gestión de riesgos: si algo se atrasa, cada nivel ya es un entregable completo.
+     Con lo de hoy ya está el nivel mínimo.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Vamos subiendo un nivel de paralelismo por fase: primero varios hilos en una PC, luego
+   varias PC con MPI y al final la GPU con CUDA."
+
+PASO A LA SIGUIENTE:
+   Empecemos por la fase 1, porque sin un simulador correcto no tiene sentido hacerlo
+   rápido.
+
+--- LÁMINA 5 de 13 · FASE 1: EL SIMULADOR VALIDADO ---
+Tiempo: 1:30 min  ·  acumulado: 6:00
+
+OBJETIVO: Demostrar con evidencia que el simulador secuencial calcula bien la física.
+
+RECORRIDO (en este orden):
+1) Panel "Oscilador de 1 grado de libertad"
+     → Es la prueba más simple: una sola masa con un resorte. Su movimiento se conoce con
+     una fórmula exacta. La línea es la fórmula; los puntos naranjas son nuestra simulación.
+     Señala que los puntos caen sobre la línea.
+2) Frase "Hito H1"
+     → El criterio del hito: medimos el periodo en la simulación y coincide con la fórmula T
+     = 2π√(m/k) con un error de 0,00001. El dibujo es ilustrativo; la figura real está en
+     results/figuras/01_validacion_1gdl.png.
+3) Tarjeta "70 pruebas"
+     → Todo el código tiene pruebas automáticas: 47 para el producto de matrices (ejemplos a
+     mano, identidad, permutaciones, comparaciones entre versiones) y 23 para el simulador.
+4) Tarjeta "÷ 4"
+     → Al dividir el paso de tiempo entre 2, el error se divide entre 4. Eso es lo que la
+     teoría predice para un método de segundo orden: prueba que el método está bien
+     implementado, no solo que "se parece".
+5) Tarjeta "6×"
+     → El resultado físico más llamativo: el edificio de 10 pisos tiene una frecuencia
+     propia de 1 Hz. El sismo de 1 Hz mueve el techo 6 veces más que los otros: es la
+     resonancia. Sin que lo programáramos a propósito, la simulación lo reproduce.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Antes de acelerar el simulador, comprobamos que calcula bien: lo comparamos contra una
+   solución exacta y pasa 70 pruebas automáticas."
+
+PASO A LA SIGUIENTE:
+   Ahora veamos las dos funciones del código que más importan. La primera es el producto
+   K·U.
+
+SI TE PREGUNTAN:
+   P: ¿Por qué no validaron con un edificio real?
+   R: Porque un edificio real no tiene solución exacta para comparar. Por eso se valida con
+   casos de respuesta conocida (el oscilador, el equilibrio estático, la linealidad) y luego
+   se aplica al edificio.
+
+--- LÁMINA 6 de 13 · FUNCIÓN CLAVE 1: spmm_csr ---
+Tiempo: 1:45 min  ·  acumulado: 7:45
+
+OBJETIVO: Explicar cómo se guarda K (CSR) y cómo se multiplica, con un ejemplo de 4 × 4.
+
+RECORRIDO (en este orden):
+1) Matriz K de 4 × 4 con colores
+     → Es un ejemplo pequeño de matriz de rigidez. Cada color es una fila, es decir, un
+     nodo. Los ceros en gris no se guardan.
+2) Arreglos val, col_idx y row_ptr
+     → Explica cada uno señalando los colores. val: los valores distintos de cero, fila por
+     fila. col_idx: en qué columna está cada valor. row_ptr: dónde empieza cada fila dentro
+     de val; por ejemplo, la fila azul ocupa las posiciones 0 y 1, y la verde empieza en la
+     2.
+3) Frase "Edificio de 100 × 400"
+     → Es el porqué de CSR: la matriz completa tendría 1 600 millones de casillas (12,8 GB
+     en doble precisión); guardando solo los no nulos son unos 200 mil números.
+4) Código (fondo oscuro) con los marcadores 1, 2 y 3
+     → Recórrelo con los marcadores, no línea por línea. 1: el bucle externo recorre las
+     filas, un nodo a la vez. 2: el bucle del medio recorre solo los vecinos de ese nodo,
+     gracias a row_ptr. 3: el bucle interno recorre los k sismos; así un solo producto
+     avanza todos los escenarios.
+5) Las tres explicaciones numeradas
+     → Son el resumen de los marcadores; úsalas si alguien se perdió.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "En vez de multiplicar por millones de ceros, cada nodo solo mira a sus cuatro vecinos, y
+   lo hace para todos los sismos de una vez."
+
+PASO A LA SIGUIENTE:
+   Esa función la usa el simulador en cada paso de tiempo. Veamos el bucle principal.
+
+SI TE PREGUNTAN:
+   P: ¿Por qué el bucle interno es el de los sismos (j) y no el de los vecinos?
+   R: Porque la fila de U de un vecino está contigua en memoria: recorrerla de corrido
+   aprovecha la caché y el compilador puede vectorizarla. Es la misma idea del orden i-k-j
+   en el producto denso.
+   P: ¿Qué significa SpMM?
+   R: Sparse Matrix times Multiple vectors: matriz dispersa por varios vectores. Es el
+   kernel que estudia el artículo de Huang y Chow (IEEE TPDS 2024) de nuestra bibliografía.
+
+--- LÁMINA 7 de 13 · FUNCIÓN CLAVE 2: sim_run ---
+Tiempo: 1:30 min  ·  acumulado: 9:15
+
+OBJETIVO: Mostrar un paso de tiempo completo y la idea del "enchufe" (puntero a función).
+
+RECORRIDO (en este orden):
+1) Código con los marcadores 1 a 4
+     → Es un paso de tiempo. 1: el producto K·U. 2: con ese resultado se calcula el nuevo
+     desplazamiento de cada nodo y cada sismo (es la fórmula de la lámina 3). 3: se guardan
+     los máximos de desplazamiento y deriva. 4: se rotan las tres matrices (pasado,
+     presente, futuro) cambiando punteros, sin copiar nada.
+2) Las cuatro explicaciones debajo del código
+     → Apóyate en ellas para no leer el código.
+3) Panel "Un enchufe para cada versión"
+     → Es una decisión de diseño importante. cfg->spmm es un puntero a función: el simulador
+     llama "a la función que le pongan". En S6 enchufamos la secuencial, en S7 la de OpenMP,
+     y en las próximas fases enchufaremos MPI y CUDA.
+4) Las cuatro filas (dos con ✔ y dos punteadas)
+     → Las dos verdes ya funcionan; las punteadas son el futuro.
+5) Frase final "Cambiar de versión es cambiar una línea"
+     → Recalca la ventaja: como el resto del simulador no cambia, la verificación es siempre
+     la misma y es fácil comparar versiones.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "El simulador no sabe si el producto lo hace un hilo, ocho hilos o una GPU: solo llama a
+   la función que le enchufamos."
+
+PASO A LA SIGUIENTE:
+   Antes de paralelizar hubo que medir. Y la medición nos dio dos sorpresas.
+
+SI TE PREGUNTAN:
+   P: ¿Por qué las variables tienen nombres como Up, U y Un?
+   R: U pasado (n−1), U presente (n) y U siguiente (n+1). El método necesita los dos
+   anteriores para calcular el siguiente.
+
+--- LÁMINA 8 de 13 · LÍNEA BASE T(1) Y LEY DE AMDAHL ---
+Tiempo: 1:30 min  ·  acumulado: 10:45
+
+OBJETIVO: Explicar las dos lecciones de la medición secuencial que guiaron toda la semana 7.
+
+RECORRIDO (en este orden):
+1) Panel izquierdo: tres barras (naive, ikj, por bloques)
+     → Es el mismo algoritmo y el mismo número de cuentas; solo cambia el orden de los
+     bucles. naive tarda 1,49 s; ikj, 0,47 s. Tres veces más rápido sin ningún hilo extra,
+     solo por usar mejor la memoria caché.
+2) "3×" y "Por eso T(1) es siempre la mejor versión secuencial"
+     → La lección: si comparáramos el paralelo contra naive, inflaríamos el speedup con una
+     mejora que no viene del paralelismo. Por eso T(1) es siempre la secuencial más rápida.
+3) Panel derecho: barra 47 % / 53 %
+     → Medimos en qué se va el tiempo del simulador: K·U es solo el 47 %. El otro 53 % es
+     actualizar U y calcular los picos.
+4) Fórmula de Amdahl
+     → La ley de Amdahl dice que si solo aceleras una parte, lo demás te frena. Con f =
+     0,47: aunque K·U tardara cero, el total no baja de 0,53 del tiempo original, o sea,
+     como máximo 1,9 veces más rápido.
+5) Recuadro verde "Decisión para S7"
+     → La consecuencia práctica: en la semana 7 paralelizamos TODO el paso, no solo el
+     producto. En la lámina de resultados se ve que la decisión era correcta.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Si solo paralelizamos la mitad del trabajo, la otra mitad nos limita: por mucho que
+   aceleremos K·U, no pasamos de 1,9 veces."
+
+PASO A LA SIGUIENTE:
+   Con eso claro, veamos cómo paralelizamos con OpenMP.
+
+SI TE PREGUNTAN:
+   P: ¿Qué es exactamente la memoria caché?
+   R: Una memoria pequeña y muy rápida dentro del procesador. Leer de la RAM es decenas de
+   veces más lento; si los datos que vas a usar están juntos en memoria, llegan a la caché
+   en bloque y se reutilizan.
+
+--- LÁMINA 9 de 13 · S7 · OPENMP ---
+Tiempo: 1:30 min  ·  acumulado: 12:15
+
+OBJETIVO: Explicar cómo se reparte el trabajo entre hilos y por qué no hay condiciones de
+carrera.
+
+RECORRIDO (en este orden):
+1) Columna de colores "K·U: filas (nodos) por hilo"
+     → Cada color es un hilo. Las filas de C se dividen en trozos iguales y cada hilo
+     calcula las suyas. En el edificio, cada hilo se encarga de un grupo de nodos.
+2) Cuadrícula "Producto denso: bloques de 64 × 64"
+     → En el producto denso repartimos bloques de C, no filas sueltas: cada bloque cabe en
+     la caché y lo calcula un solo hilo de principio a fin.
+3) Frase "Cada hilo escribe solo en su parte de C"
+     → Es LA regla del diseño. Leer lo mismo no es problema; escribir lo mismo sí.
+4) Código con #pragma omp parallel for
+     → Con una sola línea, OpenMP crea los hilos y reparte las iteraciones del for.
+     schedule(static) significa trozos iguales y contiguos: sirve porque todas las filas
+     cuestan casi lo mismo.
+5) Ícono "Sin condiciones de carrera"
+     → Una condición de carrera es cuando dos hilos escriben el mismo dato a la vez y el
+     resultado depende de quién llega primero. Aquí no puede pasar, así que no necesitamos
+     critical, atomic ni candados, que son lentos.
+6) Ícono "Idéntico bit a bit"
+     → Cada número se suma en el mismo orden que en el secuencial, así que el resultado es
+     exactamente igual, no "parecido". Lo comprueban 51 pruebas con 1, 2, 3, 4 y 8 hilos.
+7) Ícono "Todo el paso, no solo K·U"
+     → Aplicamos la decisión de Amdahl: también repartimos la actualización de U y los
+     picos. Entre ambos hay una barrera, porque la deriva de un nodo usa el nodo de abajo,
+     que puede calcularlo otro hilo.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Con OpenMP basta una línea para repartir las filas; lo difícil fue diseñar el reparto
+   para que ningún hilo pise el trabajo de otro."
+
+PASO A LA SIGUIENTE:
+   La otra versión de esta semana es en Go, donde el reparto lo programamos nosotros.
+
+SI TE PREGUNTAN:
+   P: ¿Por qué probar con 3 hilos?
+   R: Porque casi ningún tamaño es múltiplo de 3: así se prueba que el reparto disparejo
+   también funciona.
+   P: ¿Qué hace collapse(2)?
+   R: Une los dos bucles de bloques en una sola lista de tareas. Con n = 1024 y bloques de
+   64 hay 256 bloques para repartir, en lugar de solo 16 filas de bloques.
+
+--- LÁMINA 10 de 13 · S7 · GO: WORKER POOL ---
+Tiempo: 1:30 min  ·  acumulado: 13:45
+
+OBJETIVO: Explicar el worker pool de goroutines y compararlo con OpenMP.
+
+RECORRIDO (en este orden):
+1) Diagrama main → canal → G1..G4 → C
+     → main pone las tareas (rangos de filas) en un canal, que funciona como una cola.
+     Cuatro goroutines, los trabajadores, sacan tareas de ahí hasta que se acaban. Cada una
+     escribe sus filas de C (mismos colores que en OpenMP).
+2) Marcadores 1 a 4 (en el diagrama y en el código)
+     → Recorre el código con ellos. 1: se crean p trabajadores con "go func". 2: cada uno
+     toma tareas del canal hasta que se cierre. 3: main reparte las filas en tareas. 4: se
+     cierra el canal y main espera con el WaitGroup.
+3) Línea "sync.WaitGroup"
+     → Es un contador: cada trabajador avisa "terminé" (Done) y main espera (Wait) hasta que
+     todos terminen. Es el equivalente a la barrera de OpenMP.
+4) Tabla OpenMP vs. Go
+     → La diferencia clave: en OpenMP el compilador crea los hilos y reparte; en Go lo
+     escribimos nosotros. Y el reparto de Go es dinámico: el trabajador que termina antes
+     toma la siguiente tarea.
+5) Frase "Mismo generador que en C"
+     → Go genera exactamente las mismas matrices que C (mismo generador de números
+     aleatorios) y obtiene el mismo resultado bit a bit: una prueba lo compara con valores
+     calculados en C.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Es como una cola de pedidos: main anota los pedidos y cuatro cocineros los van tomando;
+   el que termina primero toma el siguiente."
+
+PASO A LA SIGUIENTE:
+   ¿Y cuánto ganamos? Estos son los resultados medidos.
+
+SI TE PREGUNTAN:
+   P: ¿Una goroutine es un hilo?
+   R: No exactamente: es una tarea liviana que el runtime de Go reparte entre hilos del
+   sistema operativo. Crear miles es barato. Con GOMAXPROCS = 12, hasta 12 corren a la vez
+   en esta PC.
+   P: ¿Cómo saben que en Go no hay condiciones de carrera?
+   R: Por diseño (cada tarea escribe filas distintas) y porque Go trae un detector: go test
+   -race. La guía explica cómo correrlo.
+
+--- LÁMINA 11 de 13 · S7 · RESULTADOS ---
+Tiempo: 1:45 min  ·  acumulado: 15:30
+
+OBJETIVO: Mostrar el speedup medido y explicar por qué cada caso escala distinto.
+
+RECORRIDO (en este orden):
+1) Título del gráfico "S(p) = T(1) / T(p)"
+     → Speedup: cuántas veces más rápido que la mejor versión secuencial. Lo ideal sería 2,
+     4 y 8.
+2) Grupo "Producto denso n = 1024"
+     → El que mejor escala: 4,7 veces con 8 hilos. Hace muchas cuentas por cada dato que
+     lee, así que aprovecha bien los núcleos.
+3) Grupo "K·U 262 144 nodos"
+     → Escala menos (2,4×): hace muy pocas cuentas por cada dato, así que el límite es la
+     velocidad de la memoria RAM, no la de los núcleos. Es una característica conocida de
+     los productos dispersos.
+4) Grupos "Simulador: solo K·U" vs. "Simulador: todo el paso" y la línea punteada
+     → Aquí se ve Amdahl en vivo: si solo paralelizamos K·U, nos quedamos en 1,3×, debajo de
+     la línea del límite teórico. Al paralelizar todo el paso llegamos a 2,5×: la decisión
+     de la lámina 8 funcionó.
+5) Grupo "Go: denso"
+     → Go escala más (5,7×) porque parte más lento; en tiempo real, con 8 hilos, Go y C
+     terminan casi empatados.
+6) Tarjetas de la derecha (4,7× · 2,5× · 5,7×)
+     → Son el resumen para quien no lee el gráfico.
+7) Recuadro amarillo "T(1) honesto"
+     → Cuenta el hallazgo como ingeniero: la primera medición daba que OpenMP con UN solo
+     hilo ya era 1,3 veces más rápido. Eso no es paralelismo: la versión OpenMP limpiaba
+     cada fila justo antes de usarla. Pasamos esa mejora también al secuencial para no
+     inflar los números.
+8) Nota de la máquina
+     → i5-11400F de 6 núcleos y 12 hilos: con 8 hilos ya compartimos núcleos, por eso la
+     eficiencia baja de 4 a 8.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Con 8 hilos el producto denso va 4,7 veces más rápido, y el simulador completo 2,5
+   veces; si solo hubiéramos paralelizado el producto, nos habríamos quedado en 1,3."
+
+PASO A LA SIGUIENTE:
+   Para cerrar: lo que aprendimos y lo que viene.
+
+SI TE PREGUNTAN:
+   P: ¿Por qué no llegan a 8× con 8 hilos?
+   R: Por tres razones: la máquina tiene 6 núcleos físicos (con 8 hilos dos núcleos se
+   comparten), la memoria RAM es una sola para todos los hilos, y en el simulador hay
+   sincronización en cada paso.
+   P: ¿Y en un edificio pequeño?
+   R: No conviene: en uno de 20 × 50 hay tan poco trabajo por paso que coordinar los hilos
+   cuesta más de lo que se gana (speedup menor que 1). Se llama granularidad.
+   P: ¿Qué pasa con n = 2048?
+   R: Escala algo menos (3,7× con 8 hilos) porque cada matriz ocupa 32 MB y ya no cabe en
+   los 12 MB de caché L3.
+
+--- LÁMINA 12 de 13 · LO APRENDIDO Y LO QUE SIGUE ---
+Tiempo: 1:15 min  ·  acumulado: 16:45
+
+OBJETIVO: Cerrar con las lecciones y el plan, y dejar la frase final.
+
+RECORRIDO (en este orden):
+1) Tarjeta "Lo aprendido" (4 puntos)
+     → Di cada punto con un ejemplo de la exposición. 121 pruebas: 70 de la fase 1 y 51 de
+     OpenMP. Medir contra la mejor secuencial: lámina 8 y el hallazgo de la 11. Amdahl: 1,3×
+     contra 2,5×. Memoria: por qué K·U escala menos que el denso.
+2) Tarjeta "Lo que sigue" (S8 a S16)
+     → S8: la demo del hito H2. S9–S11: MPI, con Cannon y SUMMA para el caso denso y el
+     edificio repartido entre procesos. S12–S13: CUDA en la tarjeta de esta PC. S14–S16:
+     medir escalabilidad, correr escenarios e informe en formato IEEE.
+3) Franja oscura "En una frase"
+     → Léela despacio: es el resumen de todo el proyecto.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "En una frase: el mismo simulador, cada vez en más núcleos, siempre con el mismo
+   resultado."
+
+PASO A LA SIGUIENTE:
+   Muchas gracias. Quedamos atentos a sus preguntas.
+
+--- LÁMINA 13 de 13 · MUCHAS GRACIAS ---
+Tiempo: 0:15 min  ·  acumulado: 17:00
+
+OBJETIVO: Agradecer y abrir la ronda de preguntas.
+
+RECORRIDO (en este orden):
+1) "MUCHAS GRACIAS"
+     → Agradece y quédate en esta lámina mientras te hacen preguntas. Si te piden ver algo,
+     vuelve a la lámina correspondiente.
+
+FRASE DE EJEMPLO (si te quedas en blanco):
+   "Muchas gracias por su atención. ¿Tienen alguna pregunta?"
+
+PASO A LA SIGUIENTE:
+   (fin)
+
+============================================================================================
+GLOSARIO RÁPIDO
+============================================================================================
+• Matriz de rigidez K: Dice cuánta fuerza aparece en cada nodo cuando se desplazan él y sus
+vecinos. Es simétrica y casi toda ceros.
+• Matriz U: Desplazamientos de todos los nodos; una columna por cada sismo (escenario).
+• GDL (grado de libertad): Cada movimiento independiente del modelo. Aquí, uno por nodo: su
+desplazamiento horizontal.
+• Deriva: Desplazamiento de un piso menos el del piso de abajo, entre la altura del piso.
+• Resonancia: Cuando el sismo vibra a la misma frecuencia que el edificio, la respuesta se
+amplifica mucho.
+• Diferencias centrales: Método explícito para avanzar en el tiempo: el siguiente instante
+sale de los dos anteriores. Exige un paso pequeño (Δt < 2/ω_max).
+• Matriz dispersa / CSR: Matriz casi toda de ceros. CSR (Compressed Sparse Row) guarda solo
+los no nulos en tres arreglos: val, col_idx y row_ptr.
+• SpMM: Sparse Matrix × Multiple vectors: matriz dispersa por varios vectores a la vez
+(nuestro K·U).
+• Caché: Memoria pequeña y muy rápida dentro del procesador. Recorrer los datos en orden la
+aprovecha.
+• Hilo: Una secuencia de ejecución dentro de un programa. Varios hilos comparten la misma
+memoria.
+• OpenMP: Estándar para paralelizar en C/C++ con directivas (#pragma). El compilador crea
+los hilos y reparte el trabajo.
+• #pragma omp parallel for: Reparte las iteraciones de un for entre los hilos.
+schedule(static) = trozos iguales y contiguos.
+• Barrera: Punto donde cada hilo espera a que todos lleguen antes de seguir. Al final de
+cada "omp for" hay una implícita.
+• Condición de carrera: Dos hilos escriben el mismo dato a la vez y el resultado depende de
+quién llega primero. Se evita si cada hilo escribe su propia parte.
+• Goroutine: Tarea liviana de Go; el runtime la reparte entre hilos del sistema operativo.
+• Canal (chan): Cola segura para pasar datos entre goroutines.
+• Worker pool: Grupo fijo de trabajadores (goroutines) que toman tareas de una cola común
+hasta que se acaban.
+• sync.WaitGroup: Contador de Go para esperar a que un grupo de goroutines termine (Add,
+Done, Wait).
+• T(1): Tiempo de la MEJOR versión secuencial. Es la referencia del speedup.
+• Speedup S(p): T(1) / T(p): cuántas veces más rápido con p hilos. Lo ideal es S(p) = p.
+• Eficiencia E(p): S(p) / p: qué fracción del ideal se logra. 1 = perfecto.
+• Ley de Amdahl: Si una fracción f del programa se paraleliza, el speedup máximo es 1 / ((1
+− f) + f/p), y nunca pasa de 1 / (1 − f).
+• Granularidad: Cuánto trabajo hay en cada tarea paralela. Si es muy poco, coordinar los
+hilos cuesta más de lo que se gana.
+• Hyperthreading: Dos hilos lógicos por núcleo físico. El i5-11400F tiene 6 núcleos y 12
+hilos lógicos.
+• Cannon y SUMMA: Algoritmos de multiplicación de matrices con MPI que se implementan en
+S9–S10.
+
+============================================================================================
+CHULETA DE CIFRAS
+============================================================================================
+• 12 000 productos K·U = 60 s de registro ÷ Δt de 0,005 s (cronograma del proyecto).
+• Edificio de 100 × 400: 40 100 nodos; K tiene 1 600 millones de casillas y 199 498 no nulos.
+• Fase 1: 70 pruebas (47 producto + 23 simulador); periodo medido = 2π√(m/k) con error 1e-5;
+  convergencia 4,00 (2.º orden); edificio 10 × 4: T1 = 1,005 s; a 1 Hz el techo se mueve
+  88,6 cm contra 14,7 cm a 0,5 Hz (6×).
+• Línea base (n = 1024, 1 hilo): naive 1,487 s · ikj 0,474 s · bloques 64 0,445 s → ~3×.
+• Simulador secuencial: K·U ≈ 47 % del tiempo → Amdahl ≤ 1 / 0,53 ≈ 1,9×.
+• S7 (DESKTOP-R3PLOD9, mediana de 5), speedup con 2 / 4 / 8 hilos:
+    denso n = 1024, OpenMP bloques ....... 1,97 / 3,38 / 4,71  (E(8) = 0,59)
+    denso n = 2048, OpenMP bloques ....... 1,88 / 3,38 / 3,73
+    K·U malla 512² (262 144 nodos) ....... 1,78 / 1,89 / 2,38
+    simulador 100 × 400, solo K·U ........ 1,27 / 1,35 / 1,31  (Amdahl: 1,30 / 1,54 / 1,69)
+    simulador 100 × 400, todo el paso .... 1,66 / 2,36 / 2,54
+    simulador 20 × 50 (chico) ............ 0,83 / 0,87 / 0,59  (no conviene: granularidad)
+    Go denso n = 1024 .................... 1,92 / 3,87 / 5,67  (T(1) Go 0,514 s vs C 0,445 s)
+    Go K·U malla 512² .................... 1,89 / 3,05 / 3,20
+• Pruebas S7: 51 de OpenMP (p = 1, 2, 3, 4 y 8; idéntico bit a bit) + las de Go (go test).
+• Hallazgo T(1): spmm_csr_omp con 1 hilo era ~1,3× más rápido que spmm_csr (limpiaba cada fila
+  en caché); se agregó spmm_csr_rowinit al secuencial y T(1) es la más rápida de las dos.
+
+============================================================================================
+FUENTES Y DÓNDE ESTÁ CADA COSA
+============================================================================================
+• Código y documentación: carpeta matmul-paralelo (README.md, docs/HITO_H1.md, docs/GUIA_S7.md).
+• Cronograma: Cronograma_Simulacion_Sismica_S5-S16 (1).pptx.
+• H. Huang y E. Chow, "Exploring the Design Space of Distributed Parallel Sparse Matrix-Multiple
+  Vector Multiplication", IEEE TPDS, vol. 35, n.º 11, pp. 1977-1988, 2024.
+  DOI 10.1109/TPDS.2024.3452478
+• J.-N. Quintin, K. Hasanov y A. Lastovetsky, "Hierarchical Parallel Matrix Multiplication on
+  Large-Scale Distributed Memory Platforms", ICPP 2013, pp. 754-762. arXiv:1306.4161
+• T. Herault, Y. Robert, G. Bosilca y J. Dongarra, "Generic Matrix Multiplication for Multi-GPU
+  Accelerated Distributed-Memory Platforms over PaRSEC", ScalA 2019, pp. 33-41.
+  DOI 10.1109/ScalA49573.2019.00010

@@ -1,0 +1,67 @@
+Edificio: 10 pisos x 4 vanos -> 50 grados de libertad, nnz(K) = 220
+
+          col 0   col 1   col 2   col 3   col 4   
+piso 10     o-------o-------o-------o-------o      o  = nodo (una masa de 20000 kg)
+            |       |       |       |       |      -  = losa/viga (resorte kb = 1.0e+08 N/m)
+piso  9     o-------o-------o-------o-------o      |  = columna (resorte kc = 3.5e+07 N/m)
+            |       |       |       |       |      50 nodos = 10 pisos x 5 columnas
+piso  8     o-------o-------o-------o-------o
+            |       |       |       |       |
+piso  7     o-------o-------o-------o-------o
+            |       |       |       |       |
+piso  6     o-------o-------o-------o-------o
+            |       |       |       |       |
+piso  5     o-------o-------o-------o-------o
+            |       |       |       |       |
+piso  4     o-------o-------o-------o-------o
+            |       |       |       |       |
+piso  3     o-------o-------o-------o-------o
+            |       |       |       |       |
+piso  2     o-------o-------o-------o-------o
+            |       |       |       |       |
+piso  1     o-------o-------o-------o-------o
+            |       |       |       |       |
+suelo     /////////////////////////////////////     (base fija: el suelo solo se sacude)
+              vano 1  vano 2  vano 3  vano 4  
+Numeracion: nodo = (piso - 1) * 5 + columna   ->   piso 1: nodos 0..4, piso 10: nodos 45..49
+
+Periodo fundamental: T1 = 1.005 s (f1 = 1.00 Hz)   |   dt = 0.0061 s (critico 0.0122 s)   |   4929 pasos (30 s)
+Escenarios: 4 sinteticos de 0.3 g (0.5, 1, 2 y 4 Hz)
+
+Desplazamiento maximo por piso [cm]
+ piso     0.5 Hz     1.0 Hz     2.0 Hz     4.0 Hz
+   10      14.73      88.59       4.23       0.12
+    9      14.44      86.61       4.04       0.25
+    8      13.87      82.69       3.68       0.48
+    7      13.01      76.92       3.18       0.78
+    6      11.88      69.43       2.59       0.97
+    5      10.48      60.40       1.97       0.99
+    4       8.83      50.01       1.38       0.84
+    3       6.95      38.51       0.87       0.59
+    2       4.83      26.15       0.47       0.32
+    1       2.51      13.22       0.19       0.11
+
+Deriva maxima por piso (peor escenario), desplazamiento relativo / altura
+   10  0.0066  ######
+    9  0.0131  ############
+    8  0.0192  #################
+    7  0.0250  #######################
+    6  0.0301  ###########################
+    5  0.0346  ###############################
+    4  0.0383  ###################################
+    3  0.0412  #####################################
+    2  0.0431  #######################################
+    1  0.0441  ########################################
+
+Resumen por escenario
+  escenario    desp. techo [cm]   deriva max  piso critico
+  0.5 Hz                  14.73       0.0084             1
+  1.0 Hz                  88.59       0.0441             1
+  2.0 Hz                   4.23       0.0021             6
+  4.0 Hz                   0.12       0.0011             8
+
+Resonancia: el sismo de 1.0 Hz es el mas cercano a f1 = 1.00 Hz y mueve el techo
+6.0 veces mas que el siguiente escenario sintetico (0.5 Hz).
+
+Tiempo total: 0.006 s   |   dentro de K*U: 0.003 s (46 %)   |   4929 productos K*U
+Resultados en results/respuesta.csv, results/mapa_deriva.csv y results/historia_techo.csv
